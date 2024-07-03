@@ -1,4 +1,4 @@
-
+/* index.css */
 html, body {
     margin: 0;
     padding: 0;
@@ -9,16 +9,48 @@ html, body {
 .indexBody {
     background-image: url("../images/fondo.jpg");
     background-size: cover;
-    background-position: center; 
+    background-position: center;
     width: 100%;
     height: 100%;
     margin: 0;
     padding: 0;
-    position: absolute;
 }
 
-.cont-form{
-    background-color: azure;
+.cont-form {
+    background-color: rgb(187, 197, 197);
     border-radius: 5px;
+    padding: 20px; 
+    max-width: 500px; 
+    margin: auto;
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
 }
 
+.logoError {
+    width: 100px; 
+    margin-bottom: 20px;
+}
+
+h3 {
+    margin-bottom: 20px;
+}
+
+input[type="number"] {
+    margin-top: 10px;
+}
+.buttonText{
+    font-size: 1.3rem;
+}
+.btn-violet{
+    background: #61114e !important;
+    color: white !important;
+    border: none;
+}
+
+.btn-violet:hover{
+    background: #bb2297 !important;
+  
+}
+.btn-violet:active{
+    background: #960a75 !important;
+    border: 1px solid  #960a75 !important;
+}

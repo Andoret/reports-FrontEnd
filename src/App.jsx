@@ -3,9 +3,11 @@ import Dashboard from "./pages/dashboard";
 import Index from "./pages/index";
 import Survey from "./pages/survey";
 import Video from "./pages/video";
+import { UserProvider } from "./context/UserContext";
 
 export default function App() {
   return (
+    <UserProvider>
     <BrowserRouter>
     <Routes>
       <Route path="/" element={<Index />} />
@@ -14,5 +16,6 @@ export default function App() {
       <Route path="/video" element={<Video />} />
     </Routes>
     </BrowserRouter>
+    </UserProvider>
     )
-}
+}  
