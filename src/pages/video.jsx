@@ -1,9 +1,11 @@
 import React, { useState, useRef } from "react";
+import { useNavigate } from 'react-router-dom';
 import "bootstrap/dist/css/bootstrap.min.css";
 import "../assets/styles/video.css";
 import videoSrc from "../assets/videos/KH Intro.mp4";
 
 export default function Video() {
+  const nav = useNavigate();
   const videoRef = useRef(null);
   const [videoEnded, setVideoEnded] = useState(false);
 
@@ -31,7 +33,11 @@ export default function Video() {
                 onPlay={handlePlay}
               />
             </div>
-            <button className={`btn-continue fw-bold ${videoEnded ? 'active' : ''}`} disabled={!videoEnded}>
+            <button
+              className={`btn-continue fw-bold ${videoEnded ? "active" : ""}`}
+              disabled={!videoEnded}
+              onClick={() => videoEnded && nav("/survey")}
+            >
               <span>Continuar</span>
             </button>
           </div>
