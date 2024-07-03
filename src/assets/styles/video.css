@@ -1,0 +1,24 @@
+html, body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+}
+
+.app {
+    width: 100%;
+    height: 100%;
+}
+
+.indexBody {
+    background-image: url("../images/fondo.jpg");
+    background-size: cover;
+    background-position: center center; 
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    position: absolute; /* Cambiado a fixed para asegurarse de que cubra toda la pantalla */
+    top: 0;
+    left: 0;
+}

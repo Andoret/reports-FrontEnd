@@ -9,7 +9,7 @@ html, body {
 .indexBody {
     background-image: url("../images/fondo.jpg");
     background-size: cover;
-    background-position: center; 
+    background-position: center center; 
     width: 100%;
     height: 100%;
     margin: 0;

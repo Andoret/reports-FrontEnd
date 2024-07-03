@@ -8,11 +8,10 @@ export default function App() {
   return (
     <BrowserRouter>
     <Routes>
-     <Route path="/" element={<Index />} />
-     <Route path="/dashboard" element={<Dashboard />} />
-     <Route path="/survey" element={<Survey />} />
-     <Route path="/survey" element={<Video />} />
-
+      <Route path="/" element={<Index />} />
+      <Route path="/dashboard" element={<Dashboard />} />
+      <Route path="/survey" element={<Survey />} />
+      <Route path="/video" element={<Video />} />
     </Routes>
     </BrowserRouter>
     )
