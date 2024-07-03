@@ -1,7 +1,11 @@
 import React from 'react'
-
+import "../assets/styles/index.css"
 export default function Index() {
   return (
-    <div>Index</div>
+    <div className='indexBody'>
+    <div className="container">
+      hola
+    </div>
+    </div>
   )
 }
