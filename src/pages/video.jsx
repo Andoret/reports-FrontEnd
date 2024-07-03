@@ -5,8 +5,8 @@ import videoSrc from '../assets/videos/KH Intro.mp4';
 
 export default function Video() {
   return (
-    <div className="app">
-      <div className="container indexBody">
+    <div className="app indexBody">
+      <div className="container">
         <div className="row">
           <div className="col-md">
             <div className="ratio ratio-16x9">
