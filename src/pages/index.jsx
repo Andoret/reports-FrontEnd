@@ -1,6 +1,7 @@
 import React from "react";
 import "../assets/styles/index.css";
 import "bootstrap/dist/css/bootstrap.min.css";
+import img1 from "../assets/images/logo-mentor.png"
 import { useContext,useState } from "react";
 import { UserContext } from "../context/UserContext";
 import { useNavigate } from "react-router-dom";
@@ -21,14 +22,21 @@ export default function Index() {
   }
 
   return (
-    <div className="d-flex justify-content-center align-items-center vh-100 indexBody">
-      <div className="container">
-        <div className="text-center cont-form">
-          <div className="row">
-            <div className="col">
-              <img alt="" className="logoError" />
-            </div>
+  <div className="indexBody indexCenter" >
+  <div className="cont d-flex justify-content-center align-items-center">
+
+    <div className="row text-center">
+          <div className="col">
+            <img alt="" src={img1} className="logoError" />
           </div>
+        </div>
+    </div>
+    <div className="">
+      
+      <div className="container">
+      
+        <div className="text-center cont-form">
+         
           <div className="row">
             <div className="col">
               <h3 className="text-center">Ingresa tu número de caso</h3>
@@ -53,6 +61,7 @@ export default function Index() {
           </div>
         </div>
       </div>
+    </div>
     </div>
   );
 }
