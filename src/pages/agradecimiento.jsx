@@ -20,7 +20,7 @@ export default function Agradecimiento() {
               <h1>Gracias por su ayuda.</h1>
             </div>
             <button
-              className="btn btn-custom fw-bold"
+              className="btn bg-light btn-custom fw-bold"
               onClick={handleClick}
             >
               <span>Volver al inicio</span>

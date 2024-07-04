@@ -48,7 +48,7 @@ export default function Index() {
                 type="number"
                 required
                 className="form-control text-center"
-                placeholder="numero de caso"
+                placeholder="Numero de caso"
                 onChange={handleChange}
                 value={caseNumber}
               />
@@ -56,7 +56,7 @@ export default function Index() {
           </div>
           <div className="row mb-4 justify-content-center">
             <div className="col-6">
-             <button className="btn btn-violet" onClick={()=>saveCaseNumber()}><span className="buttonText">Continuar</span></button>
+             <button className="btn btn-custom" onClick={()=>saveCaseNumber()}><span className="fw-bold">Continuar</span></button>
             </div>
           </div>
         </div>

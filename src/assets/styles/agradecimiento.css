@@ -2,41 +2,44 @@ h1 {
     color: white;
     font-size: 3.5rem;
     margin-bottom: 20px;
+}.btn-custom {
+  position: relative;
+  overflow: hidden;
+  background-color: transparent;
+  padding: 10px 20px;
+  margin: 20px;
+  border: 2px solid blueviolet;
+  border-radius: 10px;
+  color: black;
+  text-align: center;
+  cursor: pointer;
 }
-.btn-custom {
-    position: relative;
-    overflow: hidden;
-    background-color: transparent;
-    padding: 10px 20px;
-    margin: 20px;
-    border: 2px solid blueviolet;
-    border-radius: 10px;
-    color: black;
-    text-align: center;
-    cursor: pointer;
-  }
-  
-  .btn-custom::before {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 0;
-    height: 100%;
-    background-color: blueviolet;
-    z-index: 0;
-    transition: width 0.3s ease;
-  }
-  
-  .btn-custom:hover::before,
-  .btn-custom:focus::before {
-    width: 100%;
-    
-  }
-  
-  .btn-custom span {
-    position: relative;
-    z-index: 1;
-    color: white;
-  }
-  
+
+.btn-custom::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 0;
+  height: 100%;
+  background-color: blueviolet;
+  z-index: 0;
+  transition: width 0.3s ease;
+}
+
+.btn-custom:hover::before,
+.btn-custom:focus::before {
+  width: 100%;
+}
+
+.btn-custom span {
+  position: relative;
+  z-index: 1;
+  transition: color 0.3s ease;
+  color: black;
+}
+
+.btn-custom:hover span,
+.btn-custom:focus span {
+  color: white;
+}

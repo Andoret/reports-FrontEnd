@@ -129,7 +129,7 @@ export default function Survey() {
           </div>
           <div className="row mt-2">
             <div className="col">
-              <button className="btn btn-primary" onClick={survInfo}>Enviar</button>
+              <button className="btn btn-custom" onClick={survInfo}> <span className="fw-bold">Enviar</span></button>
             </div>
           </div>
         </div>

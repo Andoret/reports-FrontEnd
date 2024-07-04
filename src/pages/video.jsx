@@ -29,6 +29,7 @@ export default function Video() {
                 src={videoSrc}
                 controls
                 allowFullScreen
+                controlsList="nodownload"
                 onEnded={handleVideoEnd}
                 onPlay={handlePlay}
               />
