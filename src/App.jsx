@@ -17,7 +17,7 @@ export default function App() {
       <Route path="/survey" element={<Survey />} />
       <Route path="/video" element={<Video />} />
       <Route path="/agradecimiento" element={<Agradecimiento />} />
-      <Route path="/admin" element={<Login/>} />
+      <Route path="/login" element={<Login/>} />
     </Routes>
     </BrowserRouter>
     </UserProvider>
