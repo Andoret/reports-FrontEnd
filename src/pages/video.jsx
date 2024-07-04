@@ -2,7 +2,7 @@ import React, { useState, useRef } from "react";
 import { useNavigate } from 'react-router-dom';
 import "bootstrap/dist/css/bootstrap.min.css";
 import "../assets/styles/video.css";
-import videoSrc from "../assets/videos/KH Intro.mp4";
+import videoSrc from "../assets/videos/Demo-Flujos-Bancolombia-Creacion-SVE.mp4";
 
 export default function Video() {
   const nav = useNavigate();

@@ -5,6 +5,7 @@ import Survey from "./pages/survey";
 import Video from "./pages/video";
 import { UserProvider } from "./context/UserContext";
 import Agradecimiento from "./pages/agradecimiento";
+import Login from "./pages/login";
 
 export default function App() {
   return (
@@ -16,6 +17,7 @@ export default function App() {
       <Route path="/survey" element={<Survey />} />
       <Route path="/video" element={<Video />} />
       <Route path="/agradecimiento" element={<Agradecimiento />} />
+      <Route path="/admin" element={<Login/>} />
     </Routes>
     </BrowserRouter>
     </UserProvider>

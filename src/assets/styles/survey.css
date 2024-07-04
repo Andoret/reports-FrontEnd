@@ -1,4 +1,13 @@
 
 .contSurvey{
     background-color: rgba(255, 255, 255, 0.65);
+    border-radius: 15px;
+}
+.font-emoji{
+    font-size: 3rem; /* Tamaño del emoji */
+    
+    width: 100px; /* Ancho del contenedor del emoji */
+    height: 100px; /* Alto del contenedor del emoji */
+    border-radius: 50%;
+   
 }
