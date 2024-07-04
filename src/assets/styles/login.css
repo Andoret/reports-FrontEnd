@@ -1,0 +1,33 @@
+#labelAnimation{
+    display: grid;
+    grid-template-areas: "input";
+}
+
+.input-new{
+    grid-area: input;
+    width: auto;
+    font: inherit;
+    border: none;
+    border-bottom: 1px solid gray;
+    background-color: transparent;
+    color: black;
+}
+
+.labelName{
+    grid-area: input;
+    z-index: 100;
+    width: max-content;
+    padding: 0.5rem;
+    height: 100%;
+    display: flex;
+    transition: transform .3s;
+    transform-origin: center left;
+
+}
+.input-new:focus +.labelName,
+.input-new:not(:placeholder-shown)+.labelName
+{
+    transform: translateY(-30%) scale(.8);
+    background-color: rgba(255, 255, 255, 0);
+
+}

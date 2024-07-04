@@ -1,6 +1,8 @@
 import React from 'react'
 import { useState } from 'react';
 import axios from 'axios'
+import "../assets/styles/login.css"
+import img1 from "../../public/mentor.png"
 export default function Login() {
 const [credentials, setCredentials]=useState({
     userid:'',
@@ -26,31 +28,39 @@ const [credentials, setCredentials]=useState({
          
           <div className="row">
             <div className="col">
-              <h3 className="text-center">Admin Center</h3>
+             <img src={img1} alt="" width={"100px"} />
             </div>
           </div>
           <div className="row mb-2 justify-content-center">
             <div className="col-6">
-              <input
-                type="text"
-                required
-                className="form-control text-center"
-                placeholder="usuario"
-                onChange={handleChange}
-                name='userid'
-              />
+            <label id="labelAnimation">
+                <input
+                  type="text"
+                  required
+                  placeholder=" "
+                  onChange={handleChange}
+                  name='userid'
+                  className="input-new "
+                />
+                <span className="labelName">Usuario</span>
+              </label>
+              
             </div>
           </div>
           <div className="row mb-4 justify-content-center">
             <div className="col-6">
-              <input
-                type="text"
-                required
-                className="form-control text-center"
-                placeholder="contraseña"
-                onChange={handleChange}
-                name='password'
-              />
+              <label id="labelAnimation">
+                <input
+                  type="text"
+                  required
+                  placeholder=" "
+                  onChange={handleChange}
+                  name='password'
+                  className="input-new"
+                />
+                <span className="labelName">Contraseña</span>
+              </label>
+              
             </div>
           </div>
           <div className="row mb-4 justify-content-center">
