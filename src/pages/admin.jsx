@@ -10,6 +10,7 @@ import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import Typography from "@mui/material/Typography";
 import { Button, Divider } from "@mui/material";
+import '../assets/styles/animaciones.css'; // Asegúrate de importar el archivo CSS
 
 export default function Admin() {
   const nav = useNavigate();
@@ -28,7 +29,7 @@ export default function Admin() {
   return (
     <div className="app indexBody p-3">
       <section>
-        <div className="row d-flex align-items-center">
+        <div className="row d-flex align-items-center mb-3">
           <div className="col">
             <Sidebar
               open={open}
@@ -48,16 +49,24 @@ export default function Admin() {
             </Button>
           </div>
         </div>
-        <div className="row p-3">
-          <div className="col-sm-12 col-md-4 col-lg-4 mb-4">
-            <Card sx={{ height: "100%" }}>
+        <div className="row p-3" style={{ minHeight: "calc(100vh - 150px)", display: "flex", alignItems: "center" }}>
+          <div className="col-sm-12 col-md-4 col-lg-4 mb-4 d-flex justify-content-center AdminCard">
+            <Card
+              sx={{
+                width: "50%",
+                maxWidth: "50%",
+                height: "50%",
+                maxHeight: "50%",
+                alignContent: "center",
+              }}
+            >
               <CardContent
                 sx={{
                   display: "flex",
                   flexDirection: "column",
                   alignItems: "center",
                   justifyContent: "center",
-                  height: "100%",
+                  height: "200px",
                 }}
               >
                 <FileUploadIcon fontSize="large" />
@@ -68,15 +77,23 @@ export default function Admin() {
               </CardContent>
             </Card>
           </div>
-          <div className="col-sm-12 col-md-4 col-lg-4 mb-4">
-            <Card sx={{ height: "100%" }}>
+          <div className="col-sm-12 col-md-4 col-lg-4 mb-4 d-flex justify-content-center AdminCard">
+            <Card
+              sx={{
+                width: "50%",
+                maxWidth: "50%",
+                height: "50%",
+                maxHeight: "50%",
+                alignContent: "center",
+              }}
+            >
               <CardContent
                 sx={{
                   display: "flex",
                   flexDirection: "column",
                   alignItems: "center",
                   justifyContent: "center",
-                  height: "100%",
+                  height: "200px",
                 }}
               >
                 <DashboardIcon fontSize="large" />
@@ -86,15 +103,24 @@ export default function Admin() {
               </CardContent>
             </Card>
           </div>
-          <div className="col-sm-12 col-md-4 col-lg-4 mb-4">
-            <Card sx={{ height: "100%" }}>
+          <div className="col-sm-12 col-md-4 col-lg-4 mb-4 d-flex justify-content-center AdminCard">
+            <Card
+              sx={{
+                width: "50%",
+                maxWidth: "50%",
+                height: "50%",
+                maxHeight: "50%",
+                alignContent: "center",
+              }}
+            >
               <CardContent
                 sx={{
                   display: "flex",
                   flexDirection: "column",
                   alignItems: "center",
                   justifyContent: "center",
-                  height: "100%",
+                  alignContent: "center",
+                  height: "200px",
                 }}
               >
                 <AssessmentIcon fontSize="large" />
