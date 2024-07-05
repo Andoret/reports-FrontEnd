@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 import Sidebar from "../components/Sidebar/sidebar";
 
-export default function Dashboard() {
+export default function Reports() {
   const nav = useNavigate();
 
   const [open, setOpen] = useState(false);
