@@ -8,6 +8,7 @@ import TextField from "@mui/material/TextField";
 
 export default function Index() {
   const [caseNumber, setCaseNumber] = useState("");
+  const [error,setError]=useState('');
   const { setCaseNum } = useContext(UserContext);
   const nav = useNavigate();
 
@@ -18,44 +19,61 @@ export default function Index() {
   };
 
   const saveCaseNumber = () => {
-    setCaseNum(caseNumber);
-    nav("/video");
+    if (!caseNumber){
+      setError("Ingresa un numero de caso")
+    }
+    else{
+      setCaseNum(caseNumber);
+      nav("/video");
+    }
+    
   };
 
   return (
     <div className="indexBody indexCenter">
       <div>
         <div className="cont d-flex justify-content-center align-items-center">
-          <div className="row text-center">
-            <div className="col">
-              <img alt="" src={img1} className="logoError" />
-            </div>
-          </div>
         </div>
         <div className="">
           <div className="container">
-            <div className="text-center cont-form">
+            
+            <div className="text-center cont-form ">
+            <div className="col mt-2 mb-2">
+              <img alt="MentoryPro logo" src={img1} className="logoError" />
+            </div>
               <div className="row">
-                <div className="col">
-                  <h3 className="text-center text-white">
+                
+                <div className="col mb-2">
+                  <h4 className="text-center text-white">
                     Ingresa tu número de caso
-                  </h3>
+                  </h4>
                 </div>
               </div>
               <div className="row mb-4 justify-content-center">
-                <div className="col-6"></div>
+                <div className="col-8">
                 <TextField
-                  id="filled-basic"
                   label="Número de caso"
-                  variant="filled"
-                  className="textFieldLogin"
+                  
+                  variant="standard"
+                  className="textFieldLogin text-center"
                   onChange={handleChange}
                   type="number"
-                  sx={{ input: { color: "white" }, label: { color: "white" } }}
-                />
+                  sx={{
+                    "& .MuiInput-underline:before": {
+                      borderBottomColor: "white",
+                    },
+                    "& .MuiInput-underline:hover:before": {
+                      borderBottomColor: "white",
+                    },
+                    input: { color: "white",  textAlign:"center" },
+                    label: { color: "white" },
+                  }}
+                /></div>
               </div>
-              <div className="row mb-4 justify-content-center">
-                <div className="col-12">
+              <div className="row mb-4 justify-content-center ">
+            {error && <p className='text-danger mt-2 text-center'>{error}</p>}
+                
+                <div >
                   <button
                     className="btn btn-custom"
                     onClick={saveCaseNumber}

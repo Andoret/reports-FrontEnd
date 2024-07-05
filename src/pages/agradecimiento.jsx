@@ -1,13 +1,13 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
-import "../assets/styles/agradecimiento.css"; // Asegúrate de importar tu CSS personalizado aquí
+import "../assets/styles/agradecimiento.css"; 
 
 export default function Agradecimiento() {
   const nav = useNavigate();
 
   const handleClick = () => {
-    // Navegar a la ruta "/"
+    localStorage.removeItem("caseNum")
     nav("/");
   };
 

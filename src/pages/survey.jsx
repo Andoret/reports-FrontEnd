@@ -21,19 +21,37 @@ export default function Survey() {
     };
   }, []);
 
+  const{caseNum}=useContext(UserContext)
 
 
   
   const [answers, setAnswers] = useState({
-    answer1: 'true',
-    answer2: 'true',
+    answer1: '1',
+    answer2: '1',
   });
 
   const nav = useNavigate();
 
-  const survInfo = () => {
+  const survInfo = async () => {
     console.log(answers)
-    nav("/agradecimiento");
+    const data={
+      code_case:caseNum,
+      response_1:parseInt(answers.answer1),
+      response_2:parseInt(answers.answer2)
+    }
+    try{
+      const response= await axios.post("http://localhost:3000/cases/create",data)
+    if (response.data.status){
+      console.log("lo logramos papito")
+      nav("/agradecimiento");
+    }else{
+      console.log(response.data)
+    }
+    }catch(error){
+      console.error(error)
+    }
+    
+
   };
 
   const handleChange = (e) => {
@@ -68,7 +86,7 @@ export default function Survey() {
                   type="radio"
                   className="btn-check btn-light"
                   autoComplete="off"
-                  value="true"
+                  value="1"
                   id="yes1"
                   name="answer1"
                   required
@@ -78,7 +96,7 @@ export default function Survey() {
                   className="btn btn-outline-success font-emoji"
                   htmlFor="yes1"
                 >
-                    <img src={hEmoji} alt="Sí" width={"50px"}  className={`emoji ${answers.answer1 === 'false' ? 'grayscale' : ''}`}
+                    <img src={hEmoji} alt="Sí" width={"50px"}  className={`emoji ${answers.answer1 === '0' ? 'grayscale' : ''}`}
                      />
                 </label>
                 <p className="text-white">Sí</p>
@@ -88,7 +106,7 @@ export default function Survey() {
                 type="radio"
                 className="btn-check"
                 autoComplete="off"
-                value="false"
+                value="0"
                 id="no1"
                 name="answer1"
                 required
@@ -98,7 +116,7 @@ export default function Survey() {
                 className="btn btn-outline-danger font-emoji"
                 htmlFor="no1"
               >
-               <img src={sEmoji} alt="No" width={"50px"} className={`emoji ${answers.answer1 === 'true' ? 'grayscale' : ''}`} />
+               <img src={sEmoji} alt="No" width={"50px"} className={`emoji ${answers.answer1 === '1' ? 'grayscale' : ''}`} />
               </label>
               <p className="text-white">No</p>
               </div>
@@ -119,7 +137,7 @@ export default function Survey() {
                 type="radio"
                 className="btn-check btn-light"
                 autoComplete="off"
-                value="true"
+                value="1"
                 id="yes2"
                 name="answer2"
                 required
@@ -129,7 +147,7 @@ export default function Survey() {
                 className="btn btn-outline-success font-emoji "
                 htmlFor="yes2"
               >
-                <img src={hEmoji} alt="Sí" width={"50px"}  className={`emoji ${answers.answer2 === 'false' ? 'grayscale' : ''}`}/>
+                <img src={hEmoji} alt="Sí" width={"50px"}  className={`emoji ${answers.answer2 === '0' ? 'grayscale' : ''}`}/>
               </label>
               <p className="text-white">Sí</p>
               </div>
@@ -139,7 +157,7 @@ export default function Survey() {
                 type="radio"
                 className="btn-check"
                 autoComplete="off"
-                value="false"
+                value="0"
                 id="no2"
                 name="answer2"
                 required
@@ -149,7 +167,7 @@ export default function Survey() {
                 className="btn btn-outline-danger font-emoji"
                 htmlFor="no2"
               >
-                <img src={sEmoji} alt="No" width={"50px"} className={`emoji ${answers.answer2 === 'true' ? 'grayscale' : ''}`}/>
+                <img src={sEmoji} alt="No" width={"50px"} className={`emoji ${answers.answer2 === '1' ? 'grayscale' : ''}`}/>
               </label>
               <p className="text-white">No</p>
               </div>
