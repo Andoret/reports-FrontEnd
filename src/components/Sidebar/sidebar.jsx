@@ -10,17 +10,18 @@ import HomeIcon from "@mui/icons-material/Home";
 import DashboardIcon from "@mui/icons-material/Dashboard";
 import FileUploadIcon from "@mui/icons-material/FileUpload";
 import AssessmentIcon from "@mui/icons-material/Assessment";
-import MenuIcon from '@mui/icons-material/Menu';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
+import MenuIcon from "@mui/icons-material/Menu";
+import PowerSettingsNewIcon from "@mui/icons-material/PowerSettingsNew";
+import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { Box } from "@mui/material";
 
 const theme = createTheme({
   palette: {
     primary: {
-      main: '#3f51b5', // Cambia este color según tus necesidades
+      main: "#3f51b5",
     },
     text: {
-      primary: '#000', // Color de texto principal
+      primary: "#000",
     },
   },
 });
@@ -54,12 +55,28 @@ export default function Sidebar({ open, toggleDrawer, navigateTo }) {
   return (
     <ThemeProvider theme={theme}>
       <>
-        <Button onClick={toggleDrawer(true)}>
-          <MenuIcon className="text-white" />
-        </Button>
-        <Drawer open={open} onClose={toggleDrawer(false)}>
-          {Menu}
-        </Drawer>
+        <div className="col">
+          <Button onClick={toggleDrawer(true)}>
+            <MenuIcon className="text-white" />
+          </Button>
+          <Drawer open={open} onClose={toggleDrawer(false)}>
+            {Menu}
+          </Drawer>
+          <Button />
+        </div>
+        <div className="col d-flex align-items-center justify-content-end">
+          <p className="fw-bold text-white pe-2 m-0 fs-5">Nombre del usuario</p>
+          <Button
+            variant="contained"
+            color="error"
+            onClick={() => navigateTo("/Login")}
+          >
+            <PowerSettingsNewIcon
+              size="small"
+              className="text-white fw-bold m-0 p-0 fs-5"
+            />
+          </Button>
+        </div>
       </>
     </ThemeProvider>
   );
