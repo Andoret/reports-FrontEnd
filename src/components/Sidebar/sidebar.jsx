@@ -1,5 +1,4 @@
 import React from "react";
-import Box from "@mui/material/Box";
 import Drawer from "@mui/material/Drawer";
 import Button from "@mui/material/Button";
 import List from "@mui/material/List";
@@ -12,6 +11,19 @@ import DashboardIcon from "@mui/icons-material/Dashboard";
 import FileUploadIcon from "@mui/icons-material/FileUpload";
 import AssessmentIcon from "@mui/icons-material/Assessment";
 import MenuIcon from '@mui/icons-material/Menu';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { Box } from "@mui/material";
+
+const theme = createTheme({
+  palette: {
+    primary: {
+      main: '#3f51b5', // Cambia este color según tus necesidades
+    },
+    text: {
+      primary: '#000', // Color de texto principal
+    },
+  },
+});
 
 export default function Sidebar({ open, toggleDrawer, navigateTo }) {
   const Menu = (
@@ -40,13 +52,15 @@ export default function Sidebar({ open, toggleDrawer, navigateTo }) {
   );
 
   return (
-    <>
-      <Button onClick={toggleDrawer(true)}>
-        <span> <MenuIcon className="text-white"/> </span>
-      </Button>
-      <Drawer open={open} onClose={toggleDrawer(false)}>
-        {Menu}
-      </Drawer>
-    </>
+    <ThemeProvider theme={theme}>
+      <>
+        <Button onClick={toggleDrawer(true)}>
+          <MenuIcon className="text-white" />
+        </Button>
+        <Drawer open={open} onClose={toggleDrawer(false)}>
+          {Menu}
+        </Drawer>
+      </>
+    </ThemeProvider>
   );
 }
