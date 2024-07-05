@@ -28,29 +28,12 @@ export default function Admin() {
   return (
     <div className="app indexBody p-3">
       <section>
-        <div className="row d-flex align-items-center mb-3">
-          <div className="col">
+      <div className="row d-flex align-items-center mb-3">
             <Sidebar
               open={open}
               toggleDrawer={toggleDrawer}
               navigateTo={navigateTo}
             />
-          </div>
-          <div className="col d-flex align-items-center justify-content-end">
-            <p className="fw-bold text-white pe-2 m-0 fs-5">
-              Nombre del usuario
-            </p>
-            <Button
-              variant="contained"
-              color="error"
-              onClick={() => navigateTo("/Login")}
-            >
-              <PowerSettingsNewIcon
-                size="small"
-                className="text-white fw-bold m-0 p-0 fs-5"
-              />
-            </Button>
-          </div>
         </div>
         <div
           className="row p-3"
