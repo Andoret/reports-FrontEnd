@@ -10,11 +10,10 @@ import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import Typography from "@mui/material/Typography";
 import { Button, Divider } from "@mui/material";
-import '../assets/styles/animaciones.css'; // Asegúrate de importar el archivo CSS
+import "../assets/styles/admin.css";
 
 export default function Admin() {
   const nav = useNavigate();
-
   const [open, setOpen] = useState(false);
 
   const toggleDrawer = (newOpen) => () => {
@@ -41,7 +40,11 @@ export default function Admin() {
             <p className="fw-bold text-white pe-2 m-0 fs-5">
               Nombre del usuario
             </p>
-            <Button variant="contained" color="error">
+            <Button
+              variant="contained"
+              color="error"
+              onClick={() => navigateTo("/Login")}
+            >
               <PowerSettingsNewIcon
                 size="small"
                 className="text-white fw-bold m-0 p-0 fs-5"
@@ -49,29 +52,30 @@ export default function Admin() {
             </Button>
           </div>
         </div>
-        <div className="row p-3" style={{ minHeight: "calc(100vh - 150px)", display: "flex", alignItems: "center" }}>
+        <div
+          className="row p-3"
+          style={{
+            minHeight: "calc(100vh - 150px)",
+            display: "flex",
+            alignItems: "center",
+          }}
+        >
           <div className="col-sm-12 col-md-4 col-lg-4 mb-4 d-flex justify-content-center AdminCard">
             <Card
               sx={{
-                width: "50%",
-                maxWidth: "50%",
-                height: "50%",
-                maxHeight: "50%",
+                width: "60%",
+                maxWidth: "70%",
                 alignContent: "center",
+                backgroundColor: "rgb(19, 20, 20)",
+                boxShadow: "rgba(5, 5, 5, 0.80) 0px 5px 15px",
               }}
+              className="Cards"
+              onClick={() => navigateTo("/upload")}
             >
-              <CardContent
-                sx={{
-                  display: "flex",
-                  flexDirection: "column",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  height: "200px",
-                }}
-              >
+              <CardContent>
                 <FileUploadIcon fontSize="large" />
                 <Divider sx={{ width: "100%", my: 1 }} />
-                <Typography variant="h6" align="center">
+                <Typography variant="h4" align="center">
                   Subir videos
                 </Typography>
               </CardContent>
@@ -80,51 +84,38 @@ export default function Admin() {
           <div className="col-sm-12 col-md-4 col-lg-4 mb-4 d-flex justify-content-center AdminCard">
             <Card
               sx={{
-                width: "50%",
-                maxWidth: "50%",
-                height: "50%",
-                maxHeight: "50%",
+                width: "60%",
+                maxWidth: "70%",
                 alignContent: "center",
+                backgroundColor: "rgb(19, 20, 20)",
+                boxShadow: "rgba(5, 5, 5, 0.80) 0px 5px 15px",
               }}
+              className="Cards"
+              onClick={() => navigateTo("/dashboard")}
             >
-              <CardContent
-                sx={{
-                  display: "flex",
-                  flexDirection: "column",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  height: "200px",
-                }}
-              >
+              <CardContent>
                 <DashboardIcon fontSize="large" />
-                <Typography variant="h6" align="center">
+                <Typography variant="h4" align="center">
                   Videos
                 </Typography>
               </CardContent>
             </Card>
           </div>
-          <div className="col-sm-12 col-md-4 col-lg-4 mb-4 d-flex justify-content-center AdminCard">
+          <div className="col-sm-12 col-md-4 col-lg-4 border-light mb-4 d-flex justify-content-center AdminCard">
             <Card
               sx={{
-                width: "50%",
-                maxWidth: "50%",
-                height: "50%",
-                maxHeight: "50%",
+                width: "60%",
+                maxWidth: "70%",
                 alignContent: "center",
+                backgroundColor: "rgb(19, 20, 20)",
+                boxShadow: "rgba(5, 5, 5, 0.80) 0px 5px 15px",
               }}
+              className="Cards"
+              onClick={() => navigateTo("/reports")}
             >
-              <CardContent
-                sx={{
-                  display: "flex",
-                  flexDirection: "column",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  alignContent: "center",
-                  height: "200px",
-                }}
-              >
+              <CardContent>
                 <AssessmentIcon fontSize="large" />
-                <Typography variant="h6" align="center">
+                <Typography variant="h4" align="center">
                   Reportes
                 </Typography>
               </CardContent>

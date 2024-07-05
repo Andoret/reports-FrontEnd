@@ -1,0 +1,55 @@
+.AdminCard {
+  height: 50vh; 
+  perspective: 3000px;
+ 
+}
+
+.Cards {
+  height: 50vh; 
+  perspective: 3000px;
+  transition: box-shadow 0.45s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.Cards:hover {
+  -webkit-animation: slide-fwd-center 0.45s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
+  animation: slide-fwd-center 0.45s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
+  box-shadow: 0 0 15px rgba(255, 255, 255, 0.5);
+  cursor: pointer;
+}
+
+.AdminCard .MuiCard-root {
+  height: 100%;
+}
+
+.AdminCard .MuiCardContent-root {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  color: white;
+}
+
+/* Animaciones */
+
+@-webkit-keyframes slide-fwd-center {
+  0% {
+    -webkit-transform: translateZ(0);
+    transform: translateZ(0);
+  }
+  100% {
+    -webkit-transform: translateZ(160px);
+    transform: translateZ(160px);
+  }
+}
+
+@keyframes slide-fwd-center {
+  0% {
+    -webkit-transform: translateZ(0);
+    transform: translateZ(0);
+  }
+  100% {
+    -webkit-transform: translateZ(160px);
+    transform: translateZ(160px);
+  }
+}
