@@ -23,12 +23,13 @@ html, body {
     justify-content: center;
 }
 .cont-form {
-    background-color: rgba(255, 255, 255, 0.65);
     border-radius: 5px;
+
+    border-radius: 15px;
     padding: 20px; 
     max-width: 500px; 
     margin: auto;
-    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+   /*  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px; */
 }
 
 .logoError {
@@ -44,7 +45,7 @@ input[type="number"] {
     margin-top: 10px;
 }
 .buttonText{
-    font-size: 1.3rem;
+    font-size: 1.2rem;
 }
 .btn-violet{
     background: #61114e !important;
@@ -59,4 +60,11 @@ input[type="number"] {
 .btn-violet:active{
     background: #960a75 !important;
     border: 1px solid  #960a75 !important;
+}
+.btn-index{
+    color: white !important;
+}
+
+.textFieldLogin{
+    color: white !important;
 }

@@ -1,13 +1,19 @@
 
 .contSurvey{
-    background-color: rgba(255, 255, 255, 0.65);
+    /* background-color: rgb(34, 36, 36); */
     border-radius: 15px;
 }
 .font-emoji{
-    font-size: 3rem; /* Tamaño del emoji */
-    
-    width: 100px; /* Ancho del contenedor del emoji */
-    height: 100px; /* Alto del contenedor del emoji */
-    border-radius: 50%;
-   
+   margin: 0;
+   padding: 0;
+   border-radius: 50%;
+   cursor: pointer;
+   transition: filter 0.3s;
 }
+.contMain{
+    background-color: rgb(19, 20, 20);
+    border-radius: 15px;
+}
+.emoji.grayscale {
+    filter: grayscale(100%);
+  }
