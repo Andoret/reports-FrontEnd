@@ -1,8 +1,8 @@
 import React, { useState, useRef,useEffect } from "react";
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import "bootstrap/dist/css/bootstrap.min.css";
 import "../assets/styles/video.css";
-import videoSrc from "../assets/videos/Demo-Flujos-Bancolombia-Creacion-SVE.mp4";
+
 
 export default function Video() {
   useEffect(() => {
@@ -18,6 +18,8 @@ export default function Video() {
       window.removeEventListener("beforeunload", handleBeforeUnload);
     };
   }, []);
+
+  const {video} = useParams()
   const nav = useNavigate();
   const videoRef = useRef(null);
   const [videoEnded, setVideoEnded] = useState(false);
@@ -25,6 +27,8 @@ export default function Video() {
   const handleVideoEnd = () => {
     setVideoEnded(true);
   };
+
+console.log(video)
 
   const handlePlay = () => {
     setVideoEnded(false);
@@ -39,7 +43,7 @@ export default function Video() {
               <video
                 ref={videoRef}
                 className="embed-responsive-item"
-                src={videoSrc}
+                src={`/videos/${video}.mp4`}
                 controls
                 allowFullScreen
                 controlsList="nodownload"

@@ -1,6 +1,7 @@
 import React from "react";
 import Snackbar from "@mui/material/Snackbar";
 import { Button, Slide } from "@mui/material";
+import "../../assets/styles/videoItem.css";
 
 const VideoListItem = ({ video }) => {
   const [open, setOpen] = React.useState(false);
@@ -20,8 +21,12 @@ const VideoListItem = ({ video }) => {
     setOpen(false);
   };
 
+  console.log(video.src);
   return (
-    <div className="video-list-item border border-black p-1" onClick={() => copyURL(video.name_video)}>
+    <div
+      className="video-list-item border border-black p-1"
+      onClick={() => copyURL(video.name_video)}
+    >
       <video controls width="300" height="200">
         <source src={video.src} type="video/mp4" />
         Tu navegador no soporta la etiqueta de video
@@ -33,7 +38,7 @@ const VideoListItem = ({ video }) => {
         autoHideDuration={5000}
         TransitionComponent={Slide}
         onClose={handleClose}
-        message={`URL del video ${video.name_video} copiada`} 
+        message={`URL del video ${video.name_video} copiada`}
         anchorOrigin={{ vertical: "top", horizontal: "right" }}
       />
     </div>

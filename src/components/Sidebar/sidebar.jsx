@@ -37,7 +37,6 @@ export default function Sidebar({ open, toggleDrawer, navigateTo }) {
       <List>
         {[
           { text: "Index", icon: <HomeIcon />, route: "/admin" },
-          { text: "Subir videos", icon: <FileUploadIcon />, route: "/upload" },
           { text: "Videos", icon: <DashboardIcon />, route: "/dashboard" },
           { text: "Reportes", icon: <AssessmentIcon />, route: "/reports" },
         ].map((item, index) => (

@@ -1,0 +1,13 @@
+  
+  .video-list-container {
+    min-height: calc(100vh - 150px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow-y: auto;
+  }
+  
+  .logout-button {
+    margin-left: auto;
+  }
+  

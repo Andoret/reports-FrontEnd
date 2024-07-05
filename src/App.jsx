@@ -18,7 +18,7 @@ export default function App() {
       <Route path="/" element={<Index />} />
       <Route path="/dashboard" element={<Dashboard />} />
       <Route path="/survey" element={<Survey />} />
-      <Route path="/video" element={<Video />} />
+      <Route path="/video/:video" element={<Video />} />
       <Route path="/agradecimiento" element={<Agradecimiento />} />
       <Route path="/login" element={<Login/>} />
       <Route path="/upload" element={<Upload/>} />
