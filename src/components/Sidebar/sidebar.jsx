@@ -10,13 +10,12 @@ import HomeIcon from "@mui/icons-material/Home";
 import DashboardIcon from "@mui/icons-material/Dashboard";
 import FileUploadIcon from "@mui/icons-material/FileUpload";
 import AssessmentIcon from "@mui/icons-material/Assessment";
-import AppRegistrationIcon from '@mui/icons-material/AppRegistration';
+import AppRegistrationIcon from "@mui/icons-material/AppRegistration";
 import MenuIcon from "@mui/icons-material/Menu";
 import PowerSettingsNewIcon from "@mui/icons-material/PowerSettingsNew";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { Box } from "@mui/material";
 import { UserContext } from "../../context/UserContext";
-
 
 const theme = createTheme({
   palette: {
@@ -30,9 +29,7 @@ const theme = createTheme({
 });
 
 export default function Sidebar({ open, toggleDrawer, navigateTo }) {
-
-    const {role,user}=useContext(UserContext)
-
+  const { role, user } = useContext(UserContext);
 
   const Menu = (
     <Box
@@ -46,7 +43,15 @@ export default function Sidebar({ open, toggleDrawer, navigateTo }) {
           { text: "Index", icon: <HomeIcon />, route: "/admin" },
           { text: "Videos", icon: <DashboardIcon />, route: "/dashboard" },
           { text: "Reportes", icon: <AssessmentIcon />, route: "/reports" },
-          ...(role === "1" ? [{ text: "Registro", icon: <AppRegistrationIcon />, route: "/register" }] : []),
+          ...(role === "1"
+            ? [
+                {
+                  text: "Registro",
+                  icon: <AppRegistrationIcon />,
+                  route: "/register",
+                },
+              ]
+            : []),
         ].map((item) => (
           <ListItem key={item.text} disablePadding>
             <ListItemButton onClick={() => navigateTo(item.route)}>
@@ -76,7 +81,10 @@ export default function Sidebar({ open, toggleDrawer, navigateTo }) {
           <Button
             variant="contained"
             color="error"
-            onClick={() => navigateTo("/Login")}
+            onClick={() => {
+              localStorage.clear();
+              navigateTo("/Login");
+            }}
           >
             <PowerSettingsNewIcon
               size="small"
