@@ -77,7 +77,7 @@ export default function Sidebar({ open, toggleDrawer, navigateTo }) {
           <Button />
         </div>
         <div className="col d-flex align-items-center justify-content-end">
-          <p className="fw-bold text-white pe-2 m-0 fs-5">Nombre del usuario</p>
+          <p className="fw-bold text-white pe-2 m-0 fs-5">{user}</p>
           <Button
             variant="contained"
             color="error"

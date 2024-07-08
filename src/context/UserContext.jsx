@@ -8,6 +8,8 @@ const UserProvider = ({ children }) => {
   const [tkn,setTkn]=useState(()=> localStorage.getItem('tkn')|| '')
   const [user,setUser]=useState(()=> localStorage.getItem('user')|| '')
   const [id,setId]=useState(()=> localStorage.getItem('id')|| '')
+  const [clientId,setClientId]=useState(()=> localStorage.getItem('clientId')|| '')
+
 
 
   useEffect(() => {
@@ -29,6 +31,10 @@ const UserProvider = ({ children }) => {
     if (user){
       localStorage.setItem('user',user)
     }
+    
+    if (clientId){
+      localStorage.setItem('clientId',clientId)
+    }
     const handleBeforeUnload = () => {
       const tabCount = sessionStorage.getItem('tabCount');
       if (tabCount) {
@@ -41,6 +47,8 @@ const UserProvider = ({ children }) => {
           localStorage.removeItem('tkn');
           localStorage.removeItem('user');
           localStorage.removeItem('id');
+          localStorage.removeItem('clientId');
+
 
         }
       }
@@ -51,10 +59,10 @@ const UserProvider = ({ children }) => {
     return () => {
       window.removeEventListener('beforeunload', handleBeforeUnload);
     };
-  }, [caseNum,role,tkn,user]);
+  }, [caseNum,role,tkn,user,clientId]);
 
   return (
-    <UserContext.Provider value={{ caseNum, setCaseNum,role,setRole,tkn,setTkn,user,setUser,id,setId}}>
+    <UserContext.Provider value={{ caseNum, setCaseNum,role,setRole,tkn,setTkn,user,setUser,id,setId, clientId,setClientId}}>
       {children}
     </UserContext.Provider>
   );

@@ -17,7 +17,7 @@ export default function Login() {
     user_name: "",
     password: "",
   });
-  const { setRole,setUser,setTkn,setId} = useContext(UserContext);
+  const { setRole,setUser,setTkn,setId,setClientId} = useContext(UserContext);
 
   const logIn= async(e)=>{
     e.preventDefault(); 
@@ -39,7 +39,8 @@ export default function Login() {
               setUser(dataResponse.user.name_user)
               setRole(dataResponse.user.rol_id)
               setTkn(dataResponse.user.access_Token)
-              setId(dataResponse.user.id_user) 
+              setId(dataResponse.user.id_user)
+              setClientId(dataResponse.user.client_id)
               nav("/admin")
             }
           
