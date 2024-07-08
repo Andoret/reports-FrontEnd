@@ -53,7 +53,11 @@ export default function Index() {
                 <div className="col-8">
                 <TextField
                   label="Número de caso"
-                  
+                  InputProps={{
+                    inputProps: { 
+                        min: 1 
+                    }
+                }}
                   variant="standard"
                   className="textFieldLogin text-center"
                   onChange={handleChange}

@@ -1,5 +1,5 @@
 import React from "react";
-import { useState } from "react";
+import { useState,useContext} from "react";
 import { useNavigate } from "react-router-dom";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
@@ -8,7 +8,7 @@ import "../assets/styles/login.css";
 import img1 from "../assets/images/logo-mentor.png";
 import LoginIcon from '@mui/icons-material/Login';
 import { grey } from '@mui/material/colors';
-
+import { UserContext } from "../context/UserContext";
 
 export default function Login() {
   const nav=useNavigate();
@@ -17,15 +17,47 @@ export default function Login() {
     user_name: "",
     password: "",
   });
+  const { setRole,setUser,setTkn,setId} = useContext(UserContext);
 
-
-  const logIn=()=>{
+  const logIn= async(e)=>{
+    e.preventDefault(); 
     if(!credentials.user_name || !credentials.password){
       setError('Usuario o contraseña incorrecto')
 
     }
-    else{  nav('/admin')}
-  
+    else{ 
+        const data={
+          name_user:credentials.user_name,
+          password:credentials.password
+        }
+        try{
+            const response= await axios.post("http://localhost:3000/authenticate/login/",data)
+            const dataResponse=response.data.response
+            console.log("respuesta de los datos", dataResponse)
+            if(dataResponse.status){
+              console.log(dataResponse.user)
+              setUser(dataResponse.user.name_user)
+              setRole(dataResponse.user.rol_id)
+              setTkn(dataResponse.user.access_Token)
+              setId(dataResponse.user.id_user) 
+              nav("/admin")
+            }
+          
+        }
+        catch(error){
+          console.error(error)
+          if (error.response && error.response.status ===404){
+            setError('Usuario no encontrado');
+          }else if (error.response && error.response.status===401){
+            setError('Usuario o contraseña incorrecto')
+          }
+          
+          else{
+            setError('Error en el servidor, por favor intentalo de nuevo mas tarde');
+          }
+      }}
+      
+    
   }
 
 
@@ -50,6 +82,7 @@ export default function Login() {
                 <h4 className="text-center text-white mt-4">Admin Center</h4>
               </div>
             </div>
+            <form onSubmit={logIn}>
             <div className="row mb-2 justify-content-center">
               <div className="col-6">
                 <TextField
@@ -98,9 +131,10 @@ export default function Login() {
             {error && <p className='text-danger mt-2 text-center'>{error}</p>}
             <div className="row mb-3  text-center d-flex align-items-center justify-content-center">
               <div className="col-8">
-                <Button variant="contained" endIcon={<LoginIcon/>} onClick={()=>logIn()} sx={{bgcolor:grey[600],"&:hover":{bgcolor:"purple"}}}>Ingresar</Button>
+                <Button  type="submit" variant="contained" endIcon={<LoginIcon/>} sx={{bgcolor:grey[600],"&:hover":{bgcolor:"purple"}}} >Ingresar</Button>
               </div>
             </div>
+            </form>
           </div>
         </div>
       </div>

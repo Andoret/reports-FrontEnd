@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import Drawer from "@mui/material/Drawer";
 import Button from "@mui/material/Button";
 import List from "@mui/material/List";
@@ -14,6 +14,8 @@ import MenuIcon from "@mui/icons-material/Menu";
 import PowerSettingsNewIcon from "@mui/icons-material/PowerSettingsNew";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { Box } from "@mui/material";
+import { useContext } from "react";
+import { UserContext } from "../../context/UserContext";
 
 const theme = createTheme({
   palette: {
@@ -27,6 +29,9 @@ const theme = createTheme({
 });
 
 export default function Sidebar({ open, toggleDrawer, navigateTo }) {
+
+    const {role,user}=useContext(UserContext)
+
   const Menu = (
     <Box
       sx={{ width: 250 }}
