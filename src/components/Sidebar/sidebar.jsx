@@ -14,7 +14,6 @@ import MenuIcon from "@mui/icons-material/Menu";
 import PowerSettingsNewIcon from "@mui/icons-material/PowerSettingsNew";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { Box } from "@mui/material";
-import { useContext } from "react";
 import { UserContext } from "../../context/UserContext";
 
 const theme = createTheme({
