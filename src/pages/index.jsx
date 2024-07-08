@@ -24,7 +24,7 @@ export default function Index() {
     }
     else{
       setCaseNum(caseNumber);
-      nav("/video");
+      
     }
     
   };
