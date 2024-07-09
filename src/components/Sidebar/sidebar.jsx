@@ -14,15 +14,13 @@ import AppRegistrationIcon from "@mui/icons-material/AppRegistration";
 import MenuIcon from "@mui/icons-material/Menu";
 import PowerSettingsNewIcon from "@mui/icons-material/PowerSettingsNew";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-import { Box, Modal } from "@mui/material";
+import { Box } from "@mui/material";
 import { UserContext } from "../../context/UserContext";
-import TextField from "@mui/material/TextField";
-
-
+import RegisterModal from "./registerModal";
 const theme = createTheme({
   palette: {
     primary: {
-      main: "##5D5D5D",
+      main: "rgb(19, 20, 20)",
     },
     text: {
       primary: "#000",
@@ -33,11 +31,7 @@ const theme = createTheme({
 export default function Sidebar({ open, toggleDrawer, navigateTo }) {
   const { role, user } = useContext(UserContext);
   const [modalOpen, setModalOpen] = useState(false);
-  const [userInfo,setUserInfo]=useState({
-    user_name: "",
-    password: "",
-    client_id:"",
-  })
+
   const handleOpenModal = () => {
     setModalOpen(true);
   };
@@ -48,18 +42,17 @@ export default function Sidebar({ open, toggleDrawer, navigateTo }) {
 
   const Menu = (
     <Box
-      sx={{ width: 250}}
+      sx={{ width: 250 }}
       role="presentation"
       onClick={toggleDrawer(false)}
       onKeyDown={toggleDrawer(false)}
-
     >
       <List>
         {[
           { text: "Index", icon: <HomeIcon />, route: "/admin" },
           { text: "Videos", icon: <DashboardIcon />, route: "/dashboard" },
           { text: "Reportes", icon: <AssessmentIcon />, route: "/reports" },
-          ...(role === "1"
+          ...(role == "1"
             ? [
                 {
                   text: "Registro",
@@ -85,19 +78,6 @@ export default function Sidebar({ open, toggleDrawer, navigateTo }) {
     </Box>
   );
 
-  const hola =()=>{
-    console.log("hola")
-  }
-  
-
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setUserInfo((credential) => ({
-      ...credential,
-      [name]: value,
-    }));
-    console.log(`Nuevo valor del ${name}: ${value}`); 
-  };
   return (
     <ThemeProvider theme={theme}>
       <>
@@ -126,92 +106,7 @@ export default function Sidebar({ open, toggleDrawer, navigateTo }) {
             />
           </Button>
         </div>
-
-        {/* Modal */}
-        <Modal open={modalOpen} onClose={handleCloseModal} sx={{
-          "& .MuiBackdrop-root": {
-            backgroundColor: 'rgba(0, 0, 0, 0.7)', 
-          },
-          
-        }}>
-          <Box
-            sx={{
-              position: "absolute",
-              top: "50%",
-              left: "50%",
-              transform: "translate(-50%, -50%)",
-              bgcolor: "#5D5D5D",
-               bgcolor: "rgb(19, 20, 20)",
-              p: 4,
-              width: 400,
-              maxWidth: "90%",
-              borderRadius:"5px",
-            }}
-          >
-            <div className="text-center">
-              <h3 className="text-white">Registrar usuario</h3>
-            </div>
-            <form onSubmit={hola}></form>
-            <div className="row mt-2">
-            <TextField
-                  label="Usuario"
-                  InputProps={{
-                    inputProps: { 
-                        min: 1 
-                    }
-                }}
-                  variant="standard"
-                  className="textFieldLogin text-center"
-                  onChange={handleChange}
-                  type="text"
-                  sx={{
-                    "& .MuiInput-underline:before": {
-                      borderBottomColor: "white",
-                    },
-                    "& .MuiInput-underline:hover:before": {
-                      borderBottomColor: "white",
-                    },
-                    input: { color: "white",  textAlign:"center" },
-                    label: { color: "white" },
-                    
-                  }}
-                />
-            </div>
-            <div className="row mt-2">
-            <TextField
-                  label="Contraseña"
-                  InputProps={{
-                    inputProps: { 
-                        min: 1 
-                    }
-                }}
-                  variant="standard"
-                  className="textFieldLogin text-center"
-                  onChange={handleChange}
-                  type="password"
-                  sx={{
-                    "& .MuiInput-underline:before": {
-                      borderBottomColor: "white",
-                    },
-                    "& .MuiInput-underline:hover:before": {
-                      borderBottomColor: "white",
-                    },
-                    input: { color: "white",  textAlign:"center" },
-                    label: { color: "white" },
-                    
-                  }}
-                />
-            </div>
-            <div className="row d-flex justify-content-between mt-4">
-              <div className="col-6">
-            <Button onClick={handleCloseModal}>x</Button>
-            </div>
-            <div className="col-6">
-            <Button type="submit" color="success">Registrar</Button>
-            </div>
-            </div>
-          </Box>
-        </Modal>
+        <RegisterModal open={modalOpen} handleClose={handleCloseModal} />
       </>
     </ThemeProvider>
   );

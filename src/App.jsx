@@ -27,7 +27,6 @@ export default function App() {
       <Route path="/upload" element={<Upload/>} />
       <Route path="/reports" element={<Reports/>} />
       <Route path="/register" element={<Register/>} />
-
       <Route path="/admin" element={<Admin/>} />
     </Routes>
     </BrowserRouter>

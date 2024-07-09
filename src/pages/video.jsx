@@ -89,10 +89,8 @@ console.log(video)
     }
     
   };
-
   return (
     <div className="app indexBody d-flex align-items-center justify-content-center">
-     
       <Modal
         open={open}
         disableEnforceFocus
