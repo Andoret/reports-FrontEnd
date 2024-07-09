@@ -7,7 +7,7 @@ import PowerSettingsNewIcon from "@mui/icons-material/PowerSettingsNew";
 import { DataGrid } from '@mui/x-data-grid';
 import "../assets/styles/reports.css";
 import axios from 'axios'
-
+import SimCardDownloadIcon from '@mui/icons-material/SimCardDownload';
 
 export default function Reports() {
 
@@ -72,6 +72,31 @@ useEffect(() => {
     { field: 'pregunta2', headerName: 'Pregunta 2', flex: 1 },
   ];
 
+    const exportData = ()=> {
+      
+        const csvData = convertToCSV(originalRows);
+        downloadCSV(csvData);
+    
+      };
+    const convertToCSV = (array) => {
+      const header = Object.keys(array[0]).join(",");
+      const rows = array.map(obj => Object.values(obj).join(","));
+      return [header, ...rows].join("\n");
+    };
+    const downloadCSV = (csvData) => {
+      const blob = new Blob([csvData], { type: 'text/csv;charset=utf-8;' });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.setAttribute("href", url);
+      link.setAttribute("download", "data.csv");
+      link.style.visibility = 'hidden';
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    };
+  
+  
+  
   return (
     <div className="app indexBody p-3" style={{ backgroundColor: "#131414", color: "#FFFFFF" }}>
       <section>
@@ -90,6 +115,8 @@ useEffect(() => {
           <div className="container col-10 mt-4">
             <div className="contReports" style={{ backgroundColor: "#131414", color: "#FFFFFF", border:"1px solid #131414"}}>
               <div className="m-2">
+                <div className="row ">
+              <div className="col-10">
               <TextField
                 style={{border:"1px solid #131414"}}
                 variant="outlined"
@@ -114,6 +141,11 @@ useEffect(() => {
                   border:"1px solid #5D5D5D",
                 }}
               />
+              </div>
+              <div className="col-2 justify-content-center d-flex">
+                <Button variant="contained" startIcon={<SimCardDownloadIcon/>} onClick={()=> exportData()}>Exportar</Button>
+              </div>
+              </div>
               </div>
               <div className="m-2 vh-50  ">
               <DataGrid

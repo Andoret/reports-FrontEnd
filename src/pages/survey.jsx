@@ -21,7 +21,7 @@ export default function Survey() {
     };
   }, []);
 
-  const{caseNum}=useContext(UserContext)
+  const{caseNum,clientId}=useContext(UserContext)
 
 
   
@@ -37,13 +37,16 @@ export default function Survey() {
     const data={
       code_case:caseNum,
       response_1:parseInt(answers.answer1),
-      response_2:parseInt(answers.answer2)
+      response_2:parseInt(answers.answer2),
+      client_id:clientId
+
     }
     try{
       const response= await axios.post("http://localhost:3000/cases/create",data)
     if (response.data.status){
-      console.log("lo logramos papito")
+      console.log(response)
       nav("/agradecimiento");
+      localStorage.clear()
     }else{
       console.log(response.data)
     }
