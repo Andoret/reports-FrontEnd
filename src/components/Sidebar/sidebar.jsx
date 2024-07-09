@@ -24,7 +24,7 @@ import { useLocation } from "react-router-dom";
 const theme = createTheme({
   palette: {
     primary: {
-      main: "rgb(19, 20, 20)",
+      main: "#818181",
     },
     text: {
       primary: "#000",

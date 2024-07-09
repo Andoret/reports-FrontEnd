@@ -21,7 +21,7 @@ const VideoListItem = ({ video, handleVideoDeleted }) => {
 
   const copyURL = (videoName) => {
     if (!openDelete) { // Evitar copiar URL si el modal de eliminación está abierto
-      const url = `http://localhost:5173/video/${videoName}`;
+      const url = `http://localhost:5173/video/${video.client_id}/${videoName}`;
       const tempText = document.createElement("textarea");
       tempText.value = url;
       document.body.appendChild(tempText);
@@ -84,6 +84,7 @@ const VideoListItem = ({ video, handleVideoDeleted }) => {
     >
       <div className="row">
         <video controls width="100%" height="auto">
+          {console.log(video.src)}
           <source src={video.src} type="video/mp4" />
           Tu navegador no soporta la etiqueta de video
         </video>
@@ -123,10 +124,10 @@ const VideoListItem = ({ video, handleVideoDeleted }) => {
           <Typography id="modal-modal-description" sx={{ mt: 2 }}>
             {`¿Está seguro que desea eliminar el video ${video.name_video}?`}
           </Typography>
-          <Button variant="contained" color="success" onClick={deleteVideo}>
+          <Button sx={{width: "49%", marginRight: "1%", mt: 2}} variant="contained" color="success" onClick={deleteVideo}>
             Eliminar
           </Button>
-          <Button variant="contained" color="error" onClick={handleCloseDelete}>
+          <Button sx={{width: "49%", marginLeft: "1%", mt: 2}} variant="contained" color="error" onClick={handleCloseDelete}>
             Cancelar
           </Button>
         </Box>

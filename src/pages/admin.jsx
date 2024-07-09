@@ -230,13 +230,13 @@ export default function Admin() {
               type="file"
               onChange={handleFileChange}
             />
-            <label htmlFor="file-upload">
+            <label htmlFor="file-upload" style={{ width: "100%" }}>
               <Button
                 component="file"
                 variant="contained"
-                color="secondary"
+                color="primary"
                 startIcon={<CloudUploadIcon />}
-                sx={{ mt: 2 }}
+                sx={{ mt: 2, width: "100%" }}
               >
                 Seleccionar archivo
               </Button>
@@ -262,9 +262,9 @@ export default function Admin() {
                 <Button
                   component="label"
                   variant="contained"
-                  color="secondary"
+                  color="success"
                   onClick={validate}
-                  sx={{ mt: 2 }}
+                  sx={{ mt: 2, width: "100%" }}
                 >
                   Subir Archivo
                 </Button>
@@ -274,9 +274,9 @@ export default function Admin() {
               id="btnClose"
               component="label"
               variant="contained"
-              color="secondary"
+              color="error"
               onClick={handleCloseModal}
-              sx={{ mt: 2 }}
+              sx={{ mt: 2, width: "100%" }}
             >
               Cerrar
             </Button>

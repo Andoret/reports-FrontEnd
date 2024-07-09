@@ -28,7 +28,7 @@ export default function App() {
     </Route>
       <Route path="/" element={<Default />} />
       <Route path="/survey" element={<Survey />} />
-      <Route path="/video/:video" element={<Video />} />
+      <Route path="/video/:id/:video" element={<Video />} />
       <Route path="/video/" element={<Video />} />
       <Route path="/agradecimiento" element={<Agradecimiento />} />
       <Route path="/login" element={<Login/>} />

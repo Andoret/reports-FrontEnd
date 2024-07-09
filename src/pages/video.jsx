@@ -26,6 +26,7 @@ const style = {
 
 export default function Video() {
   const {video} = useParams()
+  const {id} = useParams()
   const nav = useNavigate();
   const videoRef = useRef(null);
   const [videoEnded, setVideoEnded] = useState(false);
@@ -174,7 +175,7 @@ console.log(video)
               <video
                 ref={videoRef}
                 className="embed-responsive-item"
-                src={`/videos/${video}.mp4`}
+                src={`/videos/${id}/${video}.mp4`}
                 controls
                 allowFullScreen
                 controlsList="nodownload"
