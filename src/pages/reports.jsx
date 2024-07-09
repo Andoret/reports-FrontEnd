@@ -1,4 +1,4 @@
-import React, { useState,useEffect } from "react";
+import React, { useState,useEffect,useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 import Sidebar from "../components/Sidebar/sidebar";
@@ -8,43 +8,43 @@ import { DataGrid } from '@mui/x-data-grid';
 import "../assets/styles/reports.css";
 import axios from 'axios'
 import SimCardDownloadIcon from '@mui/icons-material/SimCardDownload';
-
+import { UserContext } from "../context/UserContext";
 export default function Reports() {
 
 useEffect(() => {
     
   getData();
+  
   }, [])
   const nav = useNavigate();
   const [open, setOpen] = useState(false);
   const [searchText, setSearchText] = useState("");
+  const [cases,setCases]=useState([])
 
+  const [filteredRows, setFilteredRows] = useState([]);
+
+  const {role,clientId}=useContext(UserContext)
 
   const getData= async()=>{
     try{
-      const response = await axios.get("http://localhost:3000/cases/all")
-      console.log(response.data.response)
+      if (role=="1"){
+        const response = await axios.get("http://localhost:3000/cases/all")
+        setCases(response.data.response.cases)
+        setFilteredRows(response.data.response.cases);
+      }else if (role=="2"){
+        const response = await axios.get(`http://localhost:3000/cases/clienteid/${clientId}/`)
+        setCases(response.data.response.cases)
+        setFilteredRows(response.data.response.cases);
+      }else{
+        console.error(error)
+      }
+      
+      console.log(filteredRows)
+      
     }catch(error){
       console.error(error)
     }
   }
-
-
-  const originalRows = [
-
-    { id: 1, caseNumber: '123132123', pregunta1: 'Pregunta 1', pregunta2: 'Pregunta 2' },
-    { id: 2, caseNumber: '1231245', pregunta1: 'Pregunta 1', pregunta2: 'Pregunta 2' },
-    { id: 3, caseNumber: '1231ster', pregunta1: 'Pregunta 1', pregunta2: 'Pregunta 2' },
-    { id: 4, caseNumber: '1231', pregunta1: 'Pregunta 1', pregunta2: 'Pregunta 2' },
-    { id: 5, caseNumber: '1231ryen', pregunta1: 'Pregunta 1', pregunta2: 'Pregunta 2' },
-    { id: 6, caseNumber: '1231andre', pregunta1: 'Pregunta 1', pregunta2: 'Pregunta 2' },
-    { id: 7, caseNumber: '1231ord', pregunta1: 'Pregunta 1', pregunta2: 'Pregunta 2' },
-    { id: 8, caseNumber: '1231es', pregunta1: 'Pregunta 1', pregunta2: 'Pregunta 2' },
-    { id: 9, caseNumber: '1231', pregunta1: 'Pregunta 1', pregunta2: 'Pregunta 2' },
-  ];
-
-  const [filteredRows, setFilteredRows] = useState(originalRows);
-
   const toggleDrawer = (newOpen) => () => {
     setOpen(newOpen);
   };
@@ -56,20 +56,22 @@ useEffect(() => {
 
   const requestSearch = (searchValue) => {
     setSearchText(searchValue);
-    if (searchValue === "") {
-      setFilteredRows(originalRows);
-    } else {
-      const filteredRows = originalRows.filter((row) => {
-        return row.caseNumber.includes(searchValue);
-      });
-      setFilteredRows(filteredRows);
+    if (cases && cases.length > 0) {
+      if (searchValue === "") {
+        setFilteredRows(cases);
+      } else {
+        const filteredRows = cases.filter((row) => {
+          return row.code_case.toString().includes(searchValue); // Asegurando que code_case se convierta a string si es necesario
+        });
+        setFilteredRows(filteredRows);
+      }
     }
   };
 
   const columns = [
-    { field: 'caseNumber', headerName: 'Numero de caso', flex: 1 },
-    { field: 'pregunta1', headerName: 'Pregunta 1', flex: 1 },
-    { field: 'pregunta2', headerName: 'Pregunta 2', flex: 1 },
+    { field: 'code_case', headerName: 'Numero de caso', flex: 1 },
+    { field: 'response_1', headerName: 'Pregunta 1', flex: 1 },
+    { field: 'response_2', headerName: 'Pregunta 2', flex: 1 },
   ];
 
     const exportData = ()=> {
@@ -98,7 +100,7 @@ useEffect(() => {
   
   
   return (
-    <div className="app indexBody p-3" style={{ backgroundColor: "#131414", color: "#FFFFFF" }}>
+    <div className=" indexBodyReports" >
       <section>
         <div className="row d-flex align-items-center mb-3">
           <Sidebar
@@ -111,12 +113,12 @@ useEffect(() => {
             }}
           />
         </div>
-        <div className="row mt-5">
-          <div className="container col-10 mt-4">
+        <div className="row  mb-1">
+          <div className="container col-10  mw-50" >
             <div className="contReports" style={{ backgroundColor: "#131414", color: "#FFFFFF", border:"1px solid #131414"}}>
-              <div className="m-2">
-                <div className="row ">
-              <div className="col-10">
+              <div className="m-2  ">
+                <div className="row" style={{minHeight:"50px", margin:"0"}}>
+              <div className="col-10 ">
               <TextField
                 style={{border:"1px solid #131414"}}
                 variant="outlined"
@@ -142,12 +144,12 @@ useEffect(() => {
                 }}
               />
               </div>
-              <div className="col-2 justify-content-center d-flex">
-                <Button variant="contained" startIcon={<SimCardDownloadIcon/>} onClick={()=> exportData()}>Exportar</Button>
+              <div className="col-2 justify-content-center d-flex" style={{ height:"3.8rem",padding:"15px"}}>
+                <Button variant="contained" size="small" startIcon={<SimCardDownloadIcon/>} onClick={()=> exportData()}>Exportar</Button>
               </div>
               </div>
               </div>
-              <div className="m-2 vh-50  ">
+              <div className="m-2 mb-1">
               <DataGrid
                 rows={filteredRows}
                 columns={columns}
@@ -164,25 +166,34 @@ useEffect(() => {
                   svg:{
                     fill:"white"
                   },
+                 
+                
                   '& .MuiDataGrid-columnHeader': {
                     bgcolor: "#131414",
                     color: "#FFFFFF",
                     padding:"0",
                     margin:"0",
-                   
-                    border:"1px solid #FFFFFF"
+                    border:"1px solid #FFFFFF",
+                    fontWeight:"bold"
                   },
                   '& .MuiDataGrid-columnHeaderDraggableContainer': {
                     bgcolor: "#131414",
                     color: "#FFFFFF",
                     padding:"15px",
-                    border:"none"
+                    border:"none",
                    
+                  },"& .MuiDataGrid-columnHeaderTitle":{
+                        fontWeight:"800",
+                        fontSize:"105%",
+                        margin:"0",
+                        padding:"0"
                   },
                   '& .MuiDataGrid-cell': {
                     bgcolor: "#131414",
                     color: "#FFFFFF",
-                    border: 'none', // Cambiar el color del borde de la celda
+                    border: 'none', 
+                    margin:"0",
+                    // Cambiar el color del borde de la celda
                   },
                   '& .MuiDataGrid-row': {
                     '&:nth-of-type(even)': {

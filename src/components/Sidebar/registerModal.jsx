@@ -160,7 +160,7 @@ const UserModal = ({ open, handleClose }) => {
                     value={userInfo.client_id? userInfo.client_id:0}
                   >
                     <MenuItem value={0} disabled>
-                      <em>None</em>
+                      <em>Seleccione un cliente</em>
                     </MenuItem>
                     {clientsData.map((client) => (
                       <MenuItem value={client.client_id} key={client.client_id}>

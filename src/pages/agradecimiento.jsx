@@ -4,12 +4,6 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "../assets/styles/agradecimiento.css"; 
 
 export default function Agradecimiento() {
-  const nav = useNavigate();
-
-  const handleClick = () => {
-    localStorage.removeItem("caseNum")
-    nav("/");
-  };
 
   return (
     <div className="app indexBody d-flex align-items-center justify-content-center">

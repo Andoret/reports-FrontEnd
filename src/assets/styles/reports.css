@@ -1,2 +1,12 @@
 .contReports{
     border-radius: 5px;}
+.indexBodyReports {
+        background-image: url("../images/fondo.jpg");
+        background-size: cover;
+        background-position: center;
+        width: 100vw;
+        height: 100vh;
+        margin: 0 auto;
+        padding: 0;
+        overflow: hidden;
+      }
