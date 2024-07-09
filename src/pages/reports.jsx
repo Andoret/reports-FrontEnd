@@ -33,8 +33,9 @@ useEffect(() => {
         setFilteredRows(response.data.response.cases);
       }else if (role=="2"){
         const response = await axios.get(`http://localhost:3000/cases/clienteid/${clientId}/`)
-        setCases(response.data.response.cases)
-        setFilteredRows(response.data.response.cases);
+        console.log(response.data)
+        setCases(response.data.results)
+        setFilteredRows(response.data.results);
       }else{
         console.error(error)
       }

@@ -30,7 +30,7 @@ const UserModal = ({ open, handleClose }) => {
     try {
       const response = await axios.get("http://localhost:3000/clients/all");
       setClientsData(response.data.results);
-      console.log(clientsData)
+      
     } catch (error) {
       console.error(error);
     }

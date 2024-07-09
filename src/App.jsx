@@ -11,23 +11,27 @@ import Reports from "./pages/reports";
 import Admin from "./pages/admin";
 import Register from "./pages/register";
 import Default from "./pages/default";
+import ProtectedRoute from "./utils/protectedRoute";
 
 export default function App() {
   return (
     <UserProvider>
     <BrowserRouter>
     <Routes>
-      <Route path="/" element={<Default />} />
+
+    <Route element={<ProtectedRoute redirectPath="/login" />}>
+      <Route path="/register" element={<Register/>} />
+      <Route path="/admin" element={<Admin/>} />
+      <Route path="/reports" element={<Reports/>} />
+      <Route path="/upload" element={<Upload/>} />
       <Route path="/dashboard" element={<Dashboard />} />
+    </Route>
+      <Route path="/" element={<Default />} />
       <Route path="/survey" element={<Survey />} />
       <Route path="/video/:video" element={<Video />} />
       <Route path="/video/" element={<Video />} />
       <Route path="/agradecimiento" element={<Agradecimiento />} />
       <Route path="/login" element={<Login/>} />
-      <Route path="/upload" element={<Upload/>} />
-      <Route path="/reports" element={<Reports/>} />
-      <Route path="/register" element={<Register/>} />
-      <Route path="/admin" element={<Admin/>} />
     </Routes>
     </BrowserRouter>
     </UserProvider>
