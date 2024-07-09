@@ -21,7 +21,7 @@ import Slide from "@mui/material/Slide";
 import { UserContext } from "../context/UserContext";
 
 export default function Admin() {
-  const { id } = useContext(UserContext);
+  const { clientId } = useContext(UserContext);
   const urlPost = "http://localhost:3000/video/create";
   const nav = useNavigate();
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -96,7 +96,7 @@ export default function Admin() {
     }
     const params = new FormData();
     params.append("name_video", name_video);
-    params.append("client_id", id);
+    params.append("client_id", clientId);
     params.append("video", file);
 
     uploadVideo(params);
