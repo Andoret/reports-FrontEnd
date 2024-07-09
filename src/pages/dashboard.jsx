@@ -3,8 +3,6 @@ import { useNavigate } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 import '../assets/styles/index.css'
 import Sidebar from "../components/Sidebar/sidebar";
-import PowerSettingsNewIcon from "@mui/icons-material/PowerSettingsNew";
-import { Button } from "@mui/material";
 import VideoList from "../components/Videolist/videoList";
 import axios from "axios";
 import '../assets/styles/dashboard.css';
@@ -24,12 +22,12 @@ export default function Dashboard() {
   const getVideos = async () => {
     try {
       const response = await axios.get(urlVideos);
+      console.log(response);
       const updatedVideos = response.data.results.map(video => ({
         ...video,
         src: `/videos/${clientId}/${video.name_video}.mp4`
       }));
       setVideos(updatedVideos);
-      console.log({videos});
     } catch (error) {
       console.error("Error al obtener los videos:", error.message);
       // Manejo de errores: muestra un mensaje al usuario o redirige a una página de error
@@ -45,6 +43,10 @@ export default function Dashboard() {
     setOpen(false);
   };
 
+  const handleVideoDeleted = () => {
+    getVideos();
+  };
+
   return (
     <div className="app indexBodyDash p-3"> 
       <section>
@@ -56,7 +58,7 @@ export default function Dashboard() {
           />
         </div>
         <div className="row p-3 video-list-container">
-          <VideoList videos={videos} />
+          <VideoList videos={videos} handleVideoDeleted={handleVideoDeleted} />
         </div>
       </section>
     </div>

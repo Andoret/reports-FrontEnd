@@ -1,8 +1,6 @@
 .video-list-item {
-    border: 1px solid #000;
     padding: 10px;
-    margin-bottom: 10px;
-    background-color: #333;
+    background-color: #000000;
     color: #fff;
     cursor: pointer;
   }
@@ -10,4 +8,3 @@
   .video-title {
     margin-top: 10px;
   }
-  

@@ -14,9 +14,13 @@ import AppRegistrationIcon from "@mui/icons-material/AppRegistration";
 import MenuIcon from "@mui/icons-material/Menu";
 import PowerSettingsNewIcon from "@mui/icons-material/PowerSettingsNew";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-import { Box } from "@mui/material";
+import { Box, Typography } from "@mui/material";
 import { UserContext } from "../../context/UserContext";
 import RegisterModal from "./registerModal";
+import Breadcrumbs from "@mui/material/Breadcrumbs";
+import Link from "@mui/material/Link";
+import { useLocation } from "react-router-dom";
+
 const theme = createTheme({
   palette: {
     primary: {
@@ -31,6 +35,7 @@ const theme = createTheme({
 export default function Sidebar({ open, toggleDrawer, navigateTo }) {
   const { role, user } = useContext(UserContext);
   const [modalOpen, setModalOpen] = useState(false);
+  const location = useLocation();
 
   const handleOpenModal = () => {
     setModalOpen(true);
@@ -39,6 +44,10 @@ export default function Sidebar({ open, toggleDrawer, navigateTo }) {
   const handleCloseModal = () => {
     setModalOpen(false);
   };
+
+  const trimmedPathname = location.pathname.startsWith("/")
+    ? location.pathname.substring(1)
+    : location.pathname;
 
   const Menu = (
     <Box
@@ -81,7 +90,7 @@ export default function Sidebar({ open, toggleDrawer, navigateTo }) {
   return (
     <ThemeProvider theme={theme}>
       <>
-        <div className="col">
+        <div className="col d-flex justify-content-start">
           <Button onClick={toggleDrawer(true)}>
             <MenuIcon className="text-white" />
           </Button>
@@ -89,6 +98,27 @@ export default function Sidebar({ open, toggleDrawer, navigateTo }) {
             {Menu}
           </Drawer>
           <Button />
+
+          {location.pathname === "/Admin" ? (
+            ""
+          ) : (
+            <Breadcrumbs
+              aria-label="breadcrumb"
+              sx={{
+                padding: "10px",
+                borderRadius: "5px",
+                color: "#ffffff",
+                "& .MuiBreadcrumbs-separator": {
+                  color: "#ffffff",
+                },
+              }}
+            >
+              <Link underline="hover" color="inherit" href="/Admin">
+                Admin
+              </Link>
+              <Typography color="text.light">{trimmedPathname}</Typography>
+            </Breadcrumbs>
+          )}
         </div>
         <div className="col d-flex align-items-center justify-content-end">
           <p className="fw-bold text-white pe-2 m-0 fs-5">{user}</p>

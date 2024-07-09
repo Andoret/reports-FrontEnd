@@ -76,7 +76,7 @@ useEffect(() => {
 
     const exportData = ()=> {
       
-        const csvData = convertToCSV(originalRows);
+        const csvData = convertToCSV(cases);
         downloadCSV(csvData);
     
       };
@@ -100,7 +100,7 @@ useEffect(() => {
   
   
   return (
-    <div className=" indexBodyReports" >
+    <div className="app indexBodyReports p-3" >
       <section>
         <div className="row d-flex align-items-center mb-3">
           <Sidebar
