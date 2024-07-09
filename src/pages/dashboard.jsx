@@ -1,6 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
+import '../assets/styles/index.css'
 import Sidebar from "../components/Sidebar/sidebar";
 import PowerSettingsNewIcon from "@mui/icons-material/PowerSettingsNew";
 import { Button } from "@mui/material";
@@ -45,7 +46,7 @@ export default function Dashboard() {
   };
 
   return (
-    <div className="app indexBody p-3"> 
+    <div className="app indexBodyDash p-3"> 
       <section>
         <div className="row d-flex align-items-center mb-3">
           <Sidebar
