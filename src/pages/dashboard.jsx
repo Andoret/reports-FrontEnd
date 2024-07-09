@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 import Sidebar from "../components/Sidebar/sidebar";
@@ -7,9 +7,11 @@ import { Button } from "@mui/material";
 import VideoList from "../components/Videolist/videoList";
 import axios from "axios";
 import '../assets/styles/dashboard.css';
+import { UserContext } from "../context/UserContext";
 
 export default function Dashboard() {
-  const urlVideos = "http://localhost:3000/video/all";
+  const { clientId } = useContext(UserContext);
+  const urlVideos = `http://localhost:3000/video/clienteid/${clientId}`;
   const [videos, setVideos] = useState([]);
   const nav = useNavigate();
   const [open, setOpen] = useState(false);
@@ -21,11 +23,12 @@ export default function Dashboard() {
   const getVideos = async () => {
     try {
       const response = await axios.get(urlVideos);
-      const updatedVideos = response.data.response.map(video => ({
+      const updatedVideos = response.data.results.map(video => ({
         ...video,
-        src: `/videos/${video.name_video}.mp4`
+        src: `/videos/${clientId}/${video.name_video}.mp4`
       }));
       setVideos(updatedVideos);
+      console.log({videos});
     } catch (error) {
       console.error("Error al obtener los videos:", error.message);
       // Manejo de errores: muestra un mensaje al usuario o redirige a una página de error
