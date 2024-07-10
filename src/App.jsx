@@ -20,11 +20,13 @@ export default function App() {
     <Routes>
 
     <Route element={<ProtectedRoute redirectPath="/login" />}>
-      <Route path="/register" element={<Register/>} />
       <Route path="/admin" element={<Admin/>} />
+      <Route path="/register" element={<Register/>} />
+    
       <Route path="/reports" element={<Reports/>} />
       <Route path="/upload" element={<Upload/>} />
       <Route path="/dashboard" element={<Dashboard />} />
+
     </Route>
       <Route path="/" element={<Default />} />
       <Route path="/survey" element={<Survey />} />
