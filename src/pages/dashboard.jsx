@@ -1,39 +1,70 @@
 import React, { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
+
+// Estilos
 import "bootstrap/dist/css/bootstrap.min.css";
 import "../assets/styles/index.css";
+import "../assets/styles/dashboard.css";
+
+// Componentes
 import Sidebar from "../components/Sidebar/sidebar";
 import VideoList from "../components/Videolist/videoList";
-import axios from "axios";
-import "../assets/styles/dashboard.css";
 import { UserContext } from "../context/UserContext";
-import { Button, Snackbar, Slide } from "@mui/material";
+
+// Componentes de MUI
+import {
+  Button,
+  Snackbar,
+  Slide,
+  Skeleton,
+  Select,
+  MenuItem,
+  Modal,
+  Fade,
+  Backdrop,
+  Box,
+  Typography,
+  TextField,
+} from "@mui/material";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
-import Modal from "@mui/material/Modal";
-import Fade from "@mui/material/Fade";
-import Backdrop from "@mui/material/Backdrop";
-import Box from "@mui/material/Box";
 import FileUploadIcon from "@mui/icons-material/FileUpload";
-import Typography from "@mui/material/Typography";
 import { styled } from "@mui/material/styles";
-import { TextField } from "@mui/material";
 
 export default function Dashboard() {
+  const { role } = useContext(UserContext);
   const { clientId } = useContext(UserContext);
   const urlVideos = `http://localhost:3000/video/clienteid/${clientId}`;
+  const urlClients = `http://localhost:3000/clients/all`;
   const urlPost = "http://localhost:3000/video/create";
-  const nav = useNavigate();
+  const navigate = useNavigate();
   const [videos, setVideos] = useState([]);
+  const [clients, setClients] = useState([]);
+  const [selectedClient, setSelectedClient] = useState(
+    clientId ? `${clientId}` : "0"
+  );
   const [open, setOpen] = useState(false);
   const [modalOpen, setModalOpen] = useState(false);
   const [snackOpen, setSnackOpen] = useState(false);
   const [file, setFile] = useState(null);
   const [name_video, setVideoName] = useState("");
   const [preview, setPreview] = useState("");
+  const [loading, setLoading] = useState(true);
+  const [filter, setFilter] = useState("");
+  const [filteredVideos, setFilteredVideos] = useState([]);
 
   useEffect(() => {
     getVideos();
+    getClients();
   }, []);
+
+  useEffect(() => {
+    setFilteredVideos(
+      videos.filter((video) =>
+        video.name_video.toLowerCase().includes(filter.toLowerCase())
+      )
+    );
+  }, [filter, videos]);
 
   const getVideos = async () => {
     try {
@@ -44,8 +75,23 @@ export default function Dashboard() {
         src: `/videos/${clientId}/${video.name_video}.mp4`,
       }));
       setVideos(updatedVideos);
+      setLoading(false);
     } catch (error) {
       console.error("Error al obtener los videos:", error.message);
+      setLoading(false);
+      // Manejo de errores: muestra un mensaje al usuario o redirige a una página de error
+    }
+  };
+
+  const getClients = async () => {
+    try {
+      const response = await axios.get(urlClients);
+      setClients(response.data.results);
+      console.log(response.data.results);
+      setLoading(false);
+    } catch (error) {
+      console.error("Error al obtener los clientes:", error.message);
+      setLoading(false);
       // Manejo de errores: muestra un mensaje al usuario o redirige a una página de error
     }
   };
@@ -55,8 +101,13 @@ export default function Dashboard() {
   };
 
   const navigateTo = (route) => {
-    nav(route);
+    navigate(route);
     setOpen(false);
+  };
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setSelectedClient(value);
   };
 
   const handleVideoDeleted = () => {
@@ -153,108 +204,253 @@ export default function Dashboard() {
             navigateTo={navigateTo}
           />
         </div>
-        <div className="col d-flex justify-content-end">
-          <Button
-            variant="contained"
-            onClick={handleUploadClick}
-            startIcon={<FileUploadIcon />}
-            sx={{
-              background: "white",
-              color: "black",
-              marginLeft: "3%",
-              marginTop: "15px",
-              alignSelf: "rigth"
-            }}
-          >
-            Agregar video
-          </Button>
-          <Modal
-            aria-labelledby="transition-modal-title"
-            aria-describedby="transition-modal-description"
-            open={modalOpen}
-            onClose={handleCloseModal}
-            closeAfterTransition
-            BackdropComponent={Backdrop}
-            BackdropProps={{
-              timeout: 500,
-            }}
-          >
-            <Fade in={modalOpen}>
-              <Box sx={style}>
-                <Typography
-                  id="transition-modal-title"
-                  variant="h6"
-                  component="h2"
-                >
-                  Subir Video
-                </Typography>
-                <Typography id="transition-modal-description" sx={{ mt: 2 }}>
-                  Selecciona un video para subir y ver la vista previa.
-                </Typography>
-                <input
-                  accept="video/*"
-                  style={{ display: "none" }}
-                  id="file-upload"
-                  type="file"
-                  onChange={handleFileChange}
+        <div className="col d-flex justify-content-center align-items-center">
+          <div className="w-100 d-flex justify-content-center align-items-center">
+            {console.log("Rol: ", role)}
+            {role === "1" ? (
+              <>
+                <TextField
+                  id="standard-basic"
+                  className="me-3"
+                  label="Buscar video 1"
+                  variant="outlined"
+                  onChange={(e) => setFilter(e.target.value)}
+                  sx={{
+                    width: "50%",
+                    input: { color: "white", textAlign: "center" },
+                    label: { color: "white" },
+                    "& .MuiOutlinedInput-root": {
+                      "& fieldset": {
+                        borderColor: "white",
+                      },
+                      "&:hover fieldset": {
+                        borderColor: "white",
+                      },
+                      "&.Mui-focused fieldset": {
+                        borderColor: "white",
+                      },
+                    },
+                    "& .MuiInputLabel-root": {
+                      color: "white",
+                    },
+                    "& .MuiInputLabel-root.Mui-focused": {
+                      color: "white",
+                    },
+                    "& .MuiFilledInput-root": {
+                      backgroundColor: "#00000020",
+                      "&:hover": {
+                        backgroundColor: "#00000030",
+                      },
+                      "&.Mui-focused": {
+                        backgroundColor: "#00000020",
+                      },
+                    },
+                  }}
                 />
-                <label htmlFor="file-upload" style={{width: "100%"}}>
-                  <Button
-                    component="file"
-                    variant="contained"
-                    color="primary"
-                    startIcon={<CloudUploadIcon />}
-                    sx={{ mt: 2, width: "100%" }}
-                  >
-                    Seleccionar archivo
-                  </Button>
-                </label>
-                {file && (
-                  <div>
-                    <TextField
-                      required
-                      id="outlined-basic"
-                      onChange={(e) => {
-                        setVideoName(e.target.value);
-                      }}
-                      label="Introduce el nombre del video"
-                      variant="outlined"
-                      sx={{ marginTop: "10px", width: "100%" }}
-                    />
-                    <video
-                      width="100%"
-                      controls
-                      src={preview}
-                      style={{ marginTop: "10px" }}
-                    />
-                    <Button
-                      component="label"
-                      variant="contained"
-                      color="success"
-                      onClick={validate}
-                      sx={{ mt: 2, width: "100%"}}
-                    >
-                      Subir Archivo
-                    </Button>
-                  </div>
-                )}
+                <Select
+                  className="border text-white"
+                  name="client_id"
+                  onChange={handleChange}
+                  autoWidth
+                  label="Cliente"
+                  value={selectedClient}
+                  sx={{
+                    color: "#fff", // Color del texto seleccionado
+                    width: "20%", // Ancho del Select
+                    marginRight: "15px",
+                    "& .MuiOutlinedInput-root": {
+                      "& fieldset": {
+                        borderColor: "#fff", // Color del borde
+                      },
+                      "&:hover fieldset": {
+                        borderColor: "#fff", // Color del borde al pasar el mouse
+                      },
+                      "&.Mui-focused fieldset": {
+                        borderColor: "#fff", // Color del borde cuando está enfocado
+                      },
+                    },
+                    "& .MuiInputLabel-root": {
+                      color: "#fff", // Color de la etiqueta
+                    },
+                    "& .MuiInputLabel-root.Mui-focused": {
+                      color: "#fff", // Color de la etiqueta cuando está enfocada
+                    },
+                    "& .MuiSelect-icon": {
+                      color: "#fff", // Color del ícono del Select
+                    },
+                    "& .MuiInputBase-root": {
+                      color: "#fff", // Color del texto no seleccionado
+                    },
+                    "& .MuiSelect-root": {
+                      backgroundColor: "#fff", // Fondo del Select
+                    },
+                  }}
+                >
+                  <MenuItem value={0} disabled>
+                    Seleccione un cliente
+                  </MenuItem>
+                  {clients.map((client) => (
+                    <MenuItem key={client.client_id} value={client.client_id}>
+                      {client.client_name}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </>
+            ) : (
+              <TextField
+                id="standard-basic"
+                label="Buscar video 2"
+                variant="outlined"
+                onChange={(e) => setFilter(e.target.value)}
+                sx={{
+                  width: "50%",
+                  input: { color: "white", textAlign: "center" },
+                  label: { color: "white" },
+                  "& .MuiOutlinedInput-root": {
+                    "& fieldset": {
+                      borderColor: "white",
+                    },
+                    "&:hover fieldset": {
+                      borderColor: "white",
+                    },
+                    "&.Mui-focused fieldset": {
+                      borderColor: "white",
+                    },
+                  },
+                  "& .MuiInputLabel-root": {
+                    color: "white",
+                  },
+                  "& .MuiInputLabel-root.Mui-focused": {
+                    color: "white",
+                  },
+                  "& .MuiFilledInput-root": {
+                    backgroundColor: "#00000020",
+                    "&:hover": {
+                      backgroundColor: "#00000030",
+                    },
+                    "&.Mui-focused": {
+                      backgroundColor: "#00000020",
+                    },
+                  },
+                }}
+              />
+            )}
+
+            <Button
+              variant="contained"
+              onClick={handleUploadClick}
+              startIcon={<FileUploadIcon />}
+              sx={{
+                background: "white",
+                color: "black",
+                height: "80%",
+                maxWidth: "20%",
+              }}
+            >
+              Agregar video
+            </Button>
+          </div>
+        </div>
+        <Modal
+          aria-labelledby="transition-modal-title"
+          aria-describedby="transition-modal-description"
+          open={modalOpen}
+          onClose={handleCloseModal}
+          closeAfterTransition
+          BackdropComponent={Backdrop}
+          BackdropProps={{
+            timeout: 500,
+          }}
+        >
+          <Fade in={modalOpen}>
+            <Box sx={style}>
+              <Typography
+                id="transition-modal-title"
+                variant="h6"
+                component="h2"
+              >
+                Subir Video
+              </Typography>
+              <Typography id="transition-modal-description" sx={{ mt: 2 }}>
+                Selecciona un video para subir y ver la vista previa.
+              </Typography>
+              <input
+                accept="video/*"
+                style={{ display: "none" }}
+                id="file-upload"
+                type="file"
+                onChange={handleFileChange}
+              />
+              <label htmlFor="file-upload" style={{ width: "100%" }}>
                 <Button
-                  id="btnClose"
-                  component="label"
+                  component="span"
                   variant="contained"
-                  color="error"
-                  onClick={handleCloseModal}
+                  color="primary"
+                  startIcon={<CloudUploadIcon />}
                   sx={{ mt: 2, width: "100%" }}
                 >
-                  Cerrar
+                  Seleccionar archivo
                 </Button>
-              </Box>
-            </Fade>
-          </Modal>
-        </div>
-        <div className="row p-3 video-list-container">
-          <VideoList videos={videos} handleVideoDeleted={handleVideoDeleted} />
-        </div>
+              </label>
+              {file && (
+                <div>
+                  <TextField
+                    required
+                    id="outlined-basic"
+                    onChange={(e) => {
+                      setVideoName(e.target.value);
+                    }}
+                    label="Introduce el nombre del video"
+                    variant="outlined"
+                    sx={{ marginTop: "10px", width: "100%" }}
+                  />
+                  <video
+                    width="100%"
+                    controls
+                    src={preview}
+                    style={{ marginTop: "10px" }}
+                  />
+                  <Button
+                    variant="contained"
+                    color="success"
+                    onClick={validate}
+                    sx={{ mt: 2, width: "100%" }}
+                  >
+                    Subir Archivo
+                  </Button>
+                </div>
+              )}
+              <Button
+                id="btnClose"
+                variant="contained"
+                color="error"
+                onClick={handleCloseModal}
+                sx={{ mt: 2, width: "100%" }}
+              >
+                Cerrar
+              </Button>
+            </Box>
+          </Fade>
+        </Modal>
+        {loading ? (
+          <>
+            <div
+              className="row d-flex justify-content-around mt-5 align-content-center"
+              style={{ height: "60vh" }}
+            >
+              <Skeleton variant="rectangular" width={400} height={200} />
+              <Skeleton variant="rectangular" width={400} height={200} />
+              <Skeleton variant="rectangular" width={400} height={200} />
+            </div>
+          </>
+        ) : (
+          <div className="row p-3 video-list-container">
+            <VideoList
+              videos={filteredVideos}
+              handleVideoDeleted={handleVideoDeleted}
+            />
+          </div>
+        )}
       </section>
       <Snackbar
         open={snackOpen}

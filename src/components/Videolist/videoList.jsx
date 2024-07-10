@@ -5,8 +5,8 @@ import "../../assets/styles/videoList.css";
 const VideoList = ({ videos, handleVideoDeleted }) => {
   return (
     <div className="video-list" style={{ overflowY: "auto" }}>
-      {videos.map((video, index) => (
-        <VideoListItem key={index} video={video} handleVideoDeleted={handleVideoDeleted} />
+      {videos.map((video) => (
+        <VideoListItem key={video.id} video={video} handleVideoDeleted={handleVideoDeleted} />
       ))}
     </div>
   );

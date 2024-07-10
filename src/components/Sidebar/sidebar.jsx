@@ -99,7 +99,7 @@ export default function Sidebar({ open, toggleDrawer, navigateTo }) {
           </Drawer>
           <Button />
 
-          {location.pathname === "/Admin" ? (
+          {location.pathname == "/Admin" || location.pathname == "/admin" ? (
             ""
           ) : (
             <Breadcrumbs
@@ -107,13 +107,14 @@ export default function Sidebar({ open, toggleDrawer, navigateTo }) {
               sx={{
                 padding: "10px",
                 borderRadius: "5px",
+                cursor: "pointer",
                 color: "#ffffff",
                 "& .MuiBreadcrumbs-separator": {
                   color: "#ffffff",
                 },
               }}
             >
-              <Link underline="hover" color="inherit" href="/Admin">
+              <Link underline="hover" color="inherit" onClick={() => navigateTo("/admin")}>
                 Admin
               </Link>
               <Typography color="text.light">{trimmedPathname}</Typography>
