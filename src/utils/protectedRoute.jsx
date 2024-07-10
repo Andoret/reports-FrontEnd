@@ -2,6 +2,9 @@ import React, { useState, useEffect, useContext } from 'react';
 import { Navigate, Outlet } from 'react-router-dom';
 import axios from 'axios';
 import { UserContext } from '../context/UserContext';
+import CircularProgress, {
+  circularProgressClasses,
+} from '@mui/material/CircularProgress';
 
 export default function ProtectedRoute({ redirectPath = "/login" }) {
   const { id, role, user } = useContext(UserContext);
@@ -36,8 +39,20 @@ export default function ProtectedRoute({ redirectPath = "/login" }) {
     }
   };
   if (loading) {
-    console.log("estado de autorizacion: ",isAuthorized)
-    return <div>Loading...</div>; 
+   
+    return (
+      <React.Fragment>
+      <svg width={0} height={0}>
+        <defs>
+          <linearGradient id="my_gradient" x1="0%" y1="0%" x2="0%" y2="100%">
+            <stop offset="0%" stopColor="#e01cd5" />
+            <stop offset="100%" stopColor="#1CB5E0" />
+          </linearGradient>
+        </defs>
+      </svg>
+      <CircularProgress sx={{ 'svg circle': { stroke: 'url(#my_gradient)' } }} />
+    </React.Fragment>
+    )
    
   }
 

@@ -9,6 +9,7 @@ import "../assets/styles/reports.css";
 import axios from 'axios'
 import SimCardDownloadIcon from '@mui/icons-material/SimCardDownload';
 import { UserContext } from "../context/UserContext";
+import { PasswordTwoTone } from "@mui/icons-material";
 export default function Reports() {
 
 useEffect(() => {
@@ -33,9 +34,18 @@ useEffect(() => {
         setFilteredRows(response.data.response.cases);
       }else if (role=="2"){
         const response = await axios.get(`http://localhost:3000/cases/clienteid/${clientId}/`)
-        console.log(response.data)
-        setCases(response.data.results)
-        setFilteredRows(response.data.results);
+        
+        const responseData = response.data.results;
+        for (const part of responseData) {
+          part.date=part.date.split("T")[0];
+          const parts = part.date.split("-");
+          if (parts.length === 3) {
+            part.date = `${parts[2]}-${parts[1]}-${parts[0]}`;
+          }
+        }
+        console.log("final :  ",responseData)
+        setCases(responseData)
+        setFilteredRows(responseData);
       }else{
         console.error(error)
       }
@@ -70,9 +80,12 @@ useEffect(() => {
   };
 
   const columns = [
+    { field: 'client_name', headerName: 'Cliente', flex: 1 },
     { field: 'code_case', headerName: 'Numero de caso', flex: 1 },
     { field: 'response_1', headerName: 'Pregunta 1', flex: 1 },
     { field: 'response_2', headerName: 'Pregunta 2', flex: 1 },
+    { field: 'date', headerName: 'Fecha', flex: 1 },
+    { field: 'time', headerName: 'Hora', flex: 1 },
   ];
 
     const exportData = ()=> {
@@ -124,7 +137,7 @@ useEffect(() => {
                 style={{border:"1px solid #131414"}}
                 variant="outlined"
                 fullWidth
-                placeholder="Buscar..."
+                placeholder="Buscar por número de caso..."
                 value={searchText}
                 onChange={(e) => requestSearch(e.target.value)}
                 sx={{

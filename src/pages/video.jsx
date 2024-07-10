@@ -32,7 +32,7 @@ export default function Video() {
   const [videoEnded, setVideoEnded] = useState(false);
   const [caseNumber, setCaseNumber] = useState("");
   const [error,setError]=useState('');
-  const { setCaseNum } = useContext(UserContext);
+  const { setCaseNum,setClientId} = useContext(UserContext);
   useEffect(() => {
     const handleBeforeUnload = (event) => {
       const message = "¿Seguro que quieres cerrar esta página?";
@@ -90,6 +90,12 @@ console.log(video)
     }
     
   };
+  const checkVideo=() =>{
+    if (videoEnded){
+      setClientId(id)
+      nav("/survey")
+    } 
+  }
   return (
     <div className="app indexBody d-flex align-items-center justify-content-center">
       <Modal
@@ -186,7 +192,7 @@ console.log(video)
             <button
               className={`btn-continue fw-bold ${videoEnded ? "active" : ""}`}
               disabled={!videoEnded}
-              onClick={() => videoEnded && nav("/survey")}
+              onClick={() => checkVideo()}
             >
               <span>Continuar</span>
             </button>
