@@ -1,27 +1,37 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import "bootstrap/dist/css/bootstrap.min.css";
-import Sidebar from "../components/Sidebar/sidebar";
+import axios from "axios";
+import {
+  Card,
+  CardContent,
+  Divider,
+  Typography,
+  Button,
+  Snackbar,
+  TextField,
+  Modal,
+  Backdrop,
+  Box,
+  Fade,
+  Select,
+  MenuItem,
+  Alert,
+  Slide,
+} from "@mui/material";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import DashboardIcon from "@mui/icons-material/Dashboard";
 import FileUploadIcon from "@mui/icons-material/FileUpload";
 import AssessmentIcon from "@mui/icons-material/Assessment";
-import Card from "@mui/material/Card";
-import CardContent from "@mui/material/CardContent";
-import Typography from "@mui/material/Typography";
-import { Button, Divider, Snackbar, TextField } from "@mui/material";
-import { styled } from "@mui/material/styles";
-import Backdrop from "@mui/material/Backdrop";
-import Box from "@mui/material/Box";
-import Modal from "@mui/material/Modal";
-import Fade from "@mui/material/Fade";
-import "../assets/styles/admin.css";
-import axios from "axios";
-import Slide from "@mui/material/Slide";
 import { UserContext } from "../context/UserContext";
+import Sidebar from "../components/Sidebar/sidebar";
+import "../assets/styles/admin.css";
+import { styled } from "@mui/material/styles";
 
 export default function Admin() {
-  const { clientId } = useContext(UserContext);
+  const { role, clientId } = useContext(UserContext);
+  const urlVideosAdmin = `http://localhost:3000/video/all`;
+  const urlVideos = `http://localhost:3000/video/clienteid/${clientId}`;
+  const urlClients = `http://localhost:3000/clients/all`;
   const urlPost = "http://localhost:3000/video/create";
   const nav = useNavigate();
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -30,6 +40,13 @@ export default function Admin() {
   const [file, setFile] = useState(null);
   const [name_video, setVideoName] = useState("");
   const [preview, setPreview] = useState("");
+  const [uploadClientId, setUploadClientId] = useState(
+    role === "2" ? clientId : "0"
+  );
+  const [duplicateError, setDuplicateError] = useState(false);
+  const [videos, setVideos] = useState([]);
+  const [clients, setClients] = useState([]);
+  const [loading, setLoading] = useState(false);
 
   const VisuallyHiddenInput = styled("input")({
     clip: "rect(0 0 0 0)",
@@ -55,6 +72,52 @@ export default function Admin() {
     p: 4,
   };
 
+  useEffect(() => {
+    role === "1" ? getVideosAdmin() : getVideos();
+    getClients();
+  }, []);
+
+  const getVideos = async () => {
+    try {
+      const response = await axios.get(urlVideos);
+      const updatedVideos = response.data.results.map((video) => ({
+        ...video,
+        src: `/videos/${clientId}/${video.name_video}.mp4`,
+      }));
+      setVideos(updatedVideos);
+      setLoading(false);
+    } catch (error) {
+      console.error("Error al obtener los videos:", error.message);
+      setLoading(false);
+    }
+  };
+
+  const getVideosAdmin = async () => {
+    try {
+      const response = await axios.get(urlVideosAdmin);
+      const updatedVideos = response.data.response.map((video) => ({
+        ...video,
+        src: `/videos/${video.client_id}/${video.name_video}.mp4`,
+      }));
+      setVideos(updatedVideos);
+      setLoading(false);
+    } catch (error) {
+      console.error("Error al obtener los videos:", error.message);
+      setLoading(false);
+    }
+  };
+
+  const getClients = async () => {
+    try {
+      const response = await axios.get(urlClients);
+      setClients(response.data.results);
+      setLoading(false);
+    } catch (error) {
+      console.error("Error al obtener los clientes:", error.message);
+      setLoading(false);
+    }
+  };
+
   const toggleSidebar = (newOpen) => () => {
     setSidebarOpen(newOpen);
   };
@@ -66,6 +129,7 @@ export default function Admin() {
 
   const handleUploadClick = () => {
     setModalOpen(true);
+    setDuplicateError(false);
   };
 
   const handleFileChange = (event) => {
@@ -85,40 +149,52 @@ export default function Admin() {
     setSnackOpen(false);
   };
 
-  // Validación y subida del video
   const validate = () => {
     if (!file) {
-      console.log("Video no cargado");
+      console.error("Video no cargado");
       return;
     } else if (!name_video) {
-      console.log("Especifica el nombre del video");
+      console.error("Especifica el nombre del video");
+      return;
+    } else if (!clientId && !uploadClientId) {
+      console.error("Fallo al especificar el id del cliente");
       return;
     }
+
     const params = new FormData();
     params.append("name_video", name_video);
-    params.append("client_id", clientId);
+    const client_id = role === "1" ? uploadClientId : clientId;
+    params.append("client_id", client_id);
     params.append("video", file);
+
+    const duplicados = videos.find((u) => u.name_video === name_video);
+
+    if (duplicados) {
+      console.error("Nombre de video no disponible");
+      setDuplicateError(true);
+      return;
+    }
 
     uploadVideo(params);
   };
 
   const uploadVideo = async (params) => {
-    await axios
-      .post(urlPost, params, {
+    try {
+      const response = await axios.post(urlPost, params, {
         headers: {
           "Content-Type": "multipart/form-data",
         },
-      })
-      .then(function (respuesta) {
-        console.log("Subido con éxito");
-        document.getElementById("btnClose").click();
-        setSnackOpen(true);
-      })
-      .catch(function (error) {
-        console.log(
-          `El video ${name_video} no se subió por el siguiente error: ${error}`
-        );
       });
+      console.log("Subido con éxito");
+      document.getElementById("btnClose").click();
+      setSnackOpen(true);
+      role === "1" ? getVideosAdmin() : getVideos();
+    } catch (error) {
+      console.error(
+        `El video ${name_video} no se subió por el siguiente error:`,
+        error
+      );
+    }
   };
 
   return (
@@ -208,12 +284,8 @@ export default function Admin() {
         open={modalOpen}
         onClose={handleCloseModal}
         closeAfterTransition
-        slots={{ backdrop: Backdrop }}
-        slotProps={{
-          backdrop: {
-            timeout: 500,
-          },
-        }}
+        BackdropComponent={Backdrop}
+        BackdropProps={{ timeout: 500 }}
       >
         <Fade in={modalOpen}>
           <Box sx={style}>
@@ -232,7 +304,7 @@ export default function Admin() {
             />
             <label htmlFor="file-upload" style={{ width: "100%" }}>
               <Button
-                component="file"
+                component="span"
                 variant="contained"
                 color="primary"
                 startIcon={<CloudUploadIcon />}
@@ -246,13 +318,42 @@ export default function Admin() {
                 <TextField
                   required
                   id="outlined-basic"
-                  onChange={(e) => {
-                    setVideoName(e.target.value);
-                  }}
+                  onChange={(e) => setVideoName(e.target.value)}
                   label="Introduce el nombre del video"
                   variant="outlined"
-                  sx={{ marginTop: "10px", width: "100%" }}
+                  sx={{
+                    marginTop: "10px",
+                    width: "100%",
+                    marginBottom: "10px",
+                  }}
                 />
+
+                {duplicateError && (
+                  <Alert severity="error" sx={{ mt: 1 }}>
+                    Nombre de video duplicado. Por favor, elige otro nombre.
+                  </Alert>
+                )}
+                {role === "1" && (
+                  <Select
+                    labelId="client-select-label"
+                    sx={{ marginTop: "5px" }}
+                    id="client-select"
+                    value={uploadClientId}
+                    onChange={(e) => setUploadClientId(e.target.value)}
+                    fullWidth
+                    required
+                    label="Selecciona un cliente"
+                  >
+                    <MenuItem key={0} value={"0"} disabled>
+                      Selecciona un cliente
+                    </MenuItem>
+                    {clients.map((client) => (
+                      <MenuItem key={client.client_id} value={client.client_id}>
+                        {client.client_name}
+                      </MenuItem>
+                    ))}
+                  </Select>
+                )}
                 <video
                   width="100%"
                   controls
@@ -260,7 +361,6 @@ export default function Admin() {
                   style={{ marginTop: "10px" }}
                 />
                 <Button
-                  component="label"
                   variant="contained"
                   color="success"
                   onClick={validate}
@@ -272,7 +372,6 @@ export default function Admin() {
             )}
             <Button
               id="btnClose"
-              component="label"
               variant="contained"
               color="error"
               onClick={handleCloseModal}

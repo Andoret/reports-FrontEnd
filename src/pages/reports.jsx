@@ -6,10 +6,11 @@ import { Button, Divider, TextField } from "@mui/material";
 import PowerSettingsNewIcon from "@mui/icons-material/PowerSettingsNew";
 import { DataGrid } from '@mui/x-data-grid';
 import "../assets/styles/reports.css";
-import axios from 'axios'
+import axios, { formToJSON } from 'axios'
 import SimCardDownloadIcon from '@mui/icons-material/SimCardDownload';
 import { UserContext } from "../context/UserContext";
 import { PasswordTwoTone } from "@mui/icons-material";
+
 export default function Reports() {
 
 useEffect(() => {
@@ -26,30 +27,35 @@ useEffect(() => {
 
   const {role,clientId}=useContext(UserContext)
 
+  const normalizeDate = (data) =>{
+
+    for (const part of data) {
+      part.date=part.date.split("T")[0];
+      const parts = part.date.split("-");
+      console.log({parts})
+      if (parts.length === 3) {
+        part.date = `${parts[2]}-${parts[1]}-${parts[0]}`;
+      }
+    }
+    return data
+  }
   const getData= async()=>{
     try{
       if (role=="1"){
         const response = await axios.get("http://localhost:3000/cases/all")
-        setCases(response.data.response.cases)
-        setFilteredRows(response.data.response.cases);
+        const formatDate = normalizeDate(response.data.response.cases)
+        setCases(formatDate)
+        setFilteredRows(formatDate);
       }else if (role=="2"){
         const response = await axios.get(`http://localhost:3000/cases/clienteid/${clientId}/`)
-        
+        const formatDate = normalizeDate(response.data.results)
         const responseData = response.data.results;
-        for (const part of responseData) {
-          part.date=part.date.split("T")[0];
-          const parts = part.date.split("-");
-          if (parts.length === 3) {
-            part.date = `${parts[2]}-${parts[1]}-${parts[0]}`;
-          }
-        }
         console.log("final :  ",responseData)
-        setCases(responseData)
-        setFilteredRows(responseData);
+        setCases(formatDate)
+        setFilteredRows(formatDate);
       }else{
         console.error(error)
       }
-      
       console.log(filteredRows)
       
     }catch(error){

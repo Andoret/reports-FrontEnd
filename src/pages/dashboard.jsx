@@ -151,6 +151,7 @@ export default function Dashboard() {
 
   const handleUploadClick = () => {
     setModalOpen(true);
+    setDuplicateError(false);
   };
 
   const handleFileChange = (event) => {
