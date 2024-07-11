@@ -26,6 +26,7 @@ import {
   Box,
   Typography,
   TextField,
+  Alert,
 } from "@mui/material";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import FileUploadIcon from "@mui/icons-material/FileUpload";
@@ -34,14 +35,18 @@ import { styled } from "@mui/material/styles";
 export default function Dashboard() {
   const { role } = useContext(UserContext);
   const { clientId } = useContext(UserContext);
+  const urlVideosAdmin = `http://localhost:3000/video/all`;
   const urlVideos = `http://localhost:3000/video/clienteid/${clientId}`;
   const urlClients = `http://localhost:3000/clients/all`;
   const urlPost = "http://localhost:3000/video/create";
   const navigate = useNavigate();
   const [videos, setVideos] = useState([]);
   const [clients, setClients] = useState([]);
+  const [uploadClientId, setUploadClientId] = useState(
+    role == "2" ? `${clientId}` : "0"
+  );
   const [selectedClient, setSelectedClient] = useState(
-    clientId ? `${clientId}` : "0"
+    role == "2" ? `${clientId}` : "0"
   );
   const [open, setOpen] = useState(false);
   const [modalOpen, setModalOpen] = useState(false);
@@ -52,19 +57,22 @@ export default function Dashboard() {
   const [loading, setLoading] = useState(true);
   const [filter, setFilter] = useState("");
   const [filteredVideos, setFilteredVideos] = useState([]);
+  const [duplicateError, setDuplicateError] = useState(false);
 
   useEffect(() => {
-    getVideos();
+    role == 1 ? getVideosAdmin() : getVideos();
     getClients();
   }, []);
 
   useEffect(() => {
     setFilteredVideos(
-      videos.filter((video) =>
-        video.name_video.toLowerCase().includes(filter.toLowerCase())
+      videos.filter(
+        (video) =>
+          video.name_video.toLowerCase().includes(filter.toLowerCase()) &&
+          (selectedClient != 0 ? video.client_id == selectedClient : true)
       )
     );
-  }, [filter, videos]);
+  }, [filter, videos, selectedClient]);
 
   const getVideos = async () => {
     try {
@@ -73,6 +81,26 @@ export default function Dashboard() {
       const updatedVideos = response.data.results.map((video) => ({
         ...video,
         src: `/videos/${clientId}/${video.name_video}.mp4`,
+      }));
+      setVideos(updatedVideos);
+      setLoading(false);
+    } catch (error) {
+      console.error("Error al obtener los videos:", error.message);
+      setLoading(false);
+      // Manejo de errores: muestra un mensaje al usuario o redirige a una página de error
+    }
+  };
+
+  const getVideosAdmin = async () => {
+    try {
+      const response = await axios.get(urlVideosAdmin);
+      console.log(response);
+      const updatedVideos = response.data.response.map((video) => ({
+        ...video,
+        src:
+          role == 1
+            ? `/videos/${video.client_id}/${video.name_video}.mp4`
+            : `/videos/${clientId}/${video.name_video}.mp4`,
       }));
       setVideos(updatedVideos);
       setLoading(false);
@@ -108,6 +136,13 @@ export default function Dashboard() {
   const handleChange = (e) => {
     const { name, value } = e.target;
     setSelectedClient(value);
+    console.log({ selectedClient });
+  };
+
+  const handleChangeUpload = (e) => {
+    console.log(e.target.value);
+    setUploadClientId(e.target.value);
+    console.log({ uploadClientId });
   };
 
   const handleVideoDeleted = () => {
@@ -134,19 +169,34 @@ export default function Dashboard() {
     setSnackOpen(false);
   };
 
-  // Validación y subida del video
   const validate = () => {
     if (!file) {
-      console.log("Video no cargado");
+      console.error("Video no cargado");
+      // Aquí puedes mostrar un mensaje de error al usuario.
       return;
     } else if (!name_video) {
-      console.log("Especifica el nombre del video");
+      console.error("Especifica el nombre del video");
+      // Aquí puedes mostrar un mensaje de error al usuario.
+      return;
+    } else if (!clientId && !uploadClientId) {
+      console.error("Fallo al especificar el id del cliente");
+      // Aquí puedes mostrar un mensaje de error al usuario.
       return;
     }
+
     const params = new FormData();
     params.append("name_video", name_video);
-    params.append("client_id", clientId);
+    const client_id = role == 1 ? uploadClientId : clientId;
+    params.append("client_id", client_id);
     params.append("video", file);
+
+    const duplicados = videos.find((u) => u.name_video === name_video);
+
+    if (duplicados) {
+      console.error("Nombre de video no disponible");
+      setDuplicateError(true); // Mostrar la alerta de duplicado
+      return;
+    }
 
     uploadVideo(params);
   };
@@ -161,7 +211,7 @@ export default function Dashboard() {
       console.log("Subido con éxito");
       document.getElementById("btnClose").click();
       setSnackOpen(true);
-      getVideos(); // Actualizar lista de videos después de subir uno nuevo
+      role == 1 ? getVideosAdmin() : getVideos();
     } catch (error) {
       console.error(
         `El video ${name_video} no se subió por el siguiente error:`,
@@ -207,46 +257,46 @@ export default function Dashboard() {
         <div className="col d-flex justify-content-center align-items-center">
           <div className="w-100 d-flex justify-content-center align-items-center">
             {console.log("Rol: ", role)}
-            {role === "1" ? (
-              <>
-                <TextField
-                  id="standard-basic"
-                  className="me-3"
-                  label="Buscar video 1"
-                  variant="outlined"
-                  onChange={(e) => setFilter(e.target.value)}
-                  sx={{
-                    width: "50%",
-                    input: { color: "white", textAlign: "center" },
-                    label: { color: "white" },
-                    "& .MuiOutlinedInput-root": {
-                      "& fieldset": {
-                        borderColor: "white",
-                      },
-                      "&:hover fieldset": {
-                        borderColor: "white",
-                      },
-                      "&.Mui-focused fieldset": {
-                        borderColor: "white",
-                      },
+            <>
+              <TextField
+                id="standard-basic"
+                label="Nombre del video"
+                variant="outlined"
+                onChange={(e) => setFilter(e.target.value)}
+                sx={{
+                  width: "50%",
+                  marginRight: "15px",
+                  input: { color: "white"},
+                  label: { color: "white" },
+                  "& .MuiOutlinedInput-root": {
+                    "& fieldset": {
+                      borderColor: "white",
                     },
-                    "& .MuiInputLabel-root": {
-                      color: "white",
+                    "&:hover fieldset": {
+                      borderColor: "white",
                     },
-                    "& .MuiInputLabel-root.Mui-focused": {
-                      color: "white",
+                    "&.Mui-focused fieldset": {
+                      borderColor: "white",
                     },
-                    "& .MuiFilledInput-root": {
+                  },
+                  "& .MuiInputLabel-root": {
+                    color: "white",
+                  },
+                  "& .MuiInputLabel-root.Mui-focused": {
+                    color: "white",
+                  },
+                  "& .MuiFilledInput-root": {
+                    backgroundColor: "#00000020",
+                    "&:hover": {
+                      backgroundColor: "#00000030",
+                    },
+                    "&.Mui-focused": {
                       backgroundColor: "#00000020",
-                      "&:hover": {
-                        backgroundColor: "#00000030",
-                      },
-                      "&.Mui-focused": {
-                        backgroundColor: "#00000020",
-                      },
                     },
-                  }}
-                />
+                  },
+                }}
+              />
+              {role == "1" ? (
                 <Select
                   className="border text-white"
                   name="client_id"
@@ -286,56 +336,17 @@ export default function Dashboard() {
                     },
                   }}
                 >
-                  <MenuItem value={0} disabled>
-                    Seleccione un cliente
-                  </MenuItem>
+                  <MenuItem value={0}>Todos los clientes</MenuItem>
                   {clients.map((client) => (
                     <MenuItem key={client.client_id} value={client.client_id}>
                       {client.client_name}
                     </MenuItem>
                   ))}
                 </Select>
-              </>
-            ) : (
-              <TextField
-                id="standard-basic"
-                label="Buscar video 2"
-                variant="outlined"
-                onChange={(e) => setFilter(e.target.value)}
-                sx={{
-                  width: "50%",
-                  input: { color: "white", textAlign: "center" },
-                  label: { color: "white" },
-                  "& .MuiOutlinedInput-root": {
-                    "& fieldset": {
-                      borderColor: "white",
-                    },
-                    "&:hover fieldset": {
-                      borderColor: "white",
-                    },
-                    "&.Mui-focused fieldset": {
-                      borderColor: "white",
-                    },
-                  },
-                  "& .MuiInputLabel-root": {
-                    color: "white",
-                  },
-                  "& .MuiInputLabel-root.Mui-focused": {
-                    color: "white",
-                  },
-                  "& .MuiFilledInput-root": {
-                    backgroundColor: "#00000020",
-                    "&:hover": {
-                      backgroundColor: "#00000030",
-                    },
-                    "&.Mui-focused": {
-                      backgroundColor: "#00000020",
-                    },
-                  },
-                }}
-              />
-            )}
-
+              ) : (
+                ""
+              )}
+            </>
             <Button
               variant="contained"
               onClick={handleUploadClick}
@@ -397,13 +408,50 @@ export default function Dashboard() {
                   <TextField
                     required
                     id="outlined-basic"
-                    onChange={(e) => {
-                      setVideoName(e.target.value);
-                    }}
+                    onChange={(e) => setVideoName(e.target.value)}
                     label="Introduce el nombre del video"
                     variant="outlined"
                     sx={{ marginTop: "10px", width: "100%" }}
                   />
+                  {duplicateError && (
+                    <Alert severity="error" sx={{ mt: 1 }}>
+                      Nombre de video duplicado. Por favor, elige otro nombre.
+                    </Alert>
+                  )}
+                  {role == "1" && (
+                    <Select
+                      labelId="client-select-label"
+                      sx={{ marginTop: "5px" }}
+                      id="client-select"
+                      value={uploadClientId}
+                      onChange={(e) => {
+                        console.log(e.target.value);
+                        setUploadClientId(e.target.value);
+                      }}
+                      fullWidth
+                      required
+                      margin="normal"
+                      label="Selecciona un cliente"
+                    >
+                      <MenuItem
+                        key={0}
+                        className="text-dark"
+                        value={"0"}
+                        disabled
+                      >
+                        Selecciona un cliente
+                      </MenuItem>
+                      {clients.map((client) => (
+                        <MenuItem
+                          key={client.id}
+                          className="text-dark"
+                          value={client.client_id}
+                        >
+                          {client.client_name}
+                        </MenuItem>
+                      ))}
+                    </Select>
+                  )}
                   <video
                     width="100%"
                     controls
