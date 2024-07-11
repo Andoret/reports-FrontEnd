@@ -34,9 +34,7 @@ export default function Login() {
         try{
             const response= await axios.post("http://localhost:3000/authenticate/login/",data)
             const dataResponse=response.data.response
-            console.log("respuesta de los datos", dataResponse)
             if(dataResponse.status){
-              console.log(dataResponse.user)
               setUser(dataResponse.user.name_user)
               setRole(dataResponse.user.rol_id)
               setTkn(dataResponse.user.access_Token)
@@ -69,7 +67,6 @@ export default function Login() {
       ...credential,
       [name]: value,
     }));
-    console.log(`Nuevo valor del ${name}: ${value}`); // Aquí imprime el valor actual
   };
 
 

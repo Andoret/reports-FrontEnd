@@ -57,7 +57,6 @@ const VideoListItem = ({ video, handleVideoDeleted }) => {
     axios
       .delete(`${urlDelete}/${id}`)
       .then((response) => {
-        console.log("Video eliminado con éxito:", response.data);
         setSnackbarMessage(`Video ${video.name_video} eliminado exitosamente`);
         setOpenDelete(false);
         handleVideoDeleted(); 
@@ -84,7 +83,6 @@ const VideoListItem = ({ video, handleVideoDeleted }) => {
     >
       <div className="row">
         <video controls width="100%" height="auto">
-          {console.log(video.src)}
           <source src={video.src} type="video/mp4" />
           Tu navegador no soporta la etiqueta de video
         </video>

@@ -31,10 +31,12 @@ import {
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import FileUploadIcon from "@mui/icons-material/FileUpload";
 import { styled } from "@mui/material/styles";
+import useConfig from '../constants/useConfig'
 
 export default function Dashboard() {
   const { role } = useContext(UserContext);
   const { clientId } = useContext(UserContext);
+  const config = useConfig;
   const urlVideosAdmin = `http://localhost:3000/video/all`;
   const urlVideos = `http://localhost:3000/video/clienteid/${clientId}`;
   const urlClients = `http://localhost:3000/clients/all`;
@@ -77,7 +79,6 @@ export default function Dashboard() {
   const getVideos = async () => {
     try {
       const response = await axios.get(urlVideos);
-      console.log(response);
       const updatedVideos = response.data.results.map((video) => ({
         ...video,
         src: `/videos/${clientId}/${video.name_video}.mp4`,
@@ -94,7 +95,6 @@ export default function Dashboard() {
   const getVideosAdmin = async () => {
     try {
       const response = await axios.get(urlVideosAdmin);
-      console.log(response);
       const updatedVideos = response.data.response.map((video) => ({
         ...video,
         src:
@@ -115,7 +115,6 @@ export default function Dashboard() {
     try {
       const response = await axios.get(urlClients);
       setClients(response.data.results);
-      console.log(response.data.results);
       setLoading(false);
     } catch (error) {
       console.error("Error al obtener los clientes:", error.message);
@@ -136,13 +135,10 @@ export default function Dashboard() {
   const handleChange = (e) => {
     const { name, value } = e.target;
     setSelectedClient(value);
-    console.log({ selectedClient });
   };
 
   const handleChangeUpload = (e) => {
-    console.log(e.target.value);
     setUploadClientId(e.target.value);
-    console.log({ uploadClientId });
   };
 
   const handleVideoDeleted = () => {
@@ -257,7 +253,6 @@ export default function Dashboard() {
         </div>
         <div className="col d-flex justify-content-center align-items-center">
           <div className="w-100 d-flex justify-content-center align-items-center">
-            {console.log("Rol: ", role)}
             <>
               <TextField
                 id="standard-basic"
@@ -426,7 +421,6 @@ export default function Dashboard() {
                       id="client-select"
                       value={uploadClientId}
                       onChange={(e) => {
-                        console.log(e.target.value);
                         setUploadClientId(e.target.value);
                       }}
                       fullWidth

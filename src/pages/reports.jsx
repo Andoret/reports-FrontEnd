@@ -32,7 +32,6 @@ useEffect(() => {
     for (const part of data) {
       part.date=part.date.split("T")[0];
       const parts = part.date.split("-");
-      console.log({parts})
       if (parts.length === 3) {
         part.date = `${parts[2]}-${parts[1]}-${parts[0]}`;
       }
@@ -50,13 +49,11 @@ useEffect(() => {
         const response = await axios.get(`http://localhost:3000/cases/clienteid/${clientId}/`)
         const formatDate = normalizeDate(response.data.results)
         const responseData = response.data.results;
-        console.log("final :  ",responseData)
         setCases(formatDate)
         setFilteredRows(formatDate);
       }else{
         console.error(error)
       }
-      console.log(filteredRows)
       
     }catch(error){
       console.error(error)

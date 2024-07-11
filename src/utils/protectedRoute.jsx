@@ -12,7 +12,6 @@ export default function ProtectedRoute({ redirectPath = "/login" }) {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    console.log(" ",id ," ", role," ", user)
     if (id && role && user) {
       getUser();
     }  else {
@@ -25,7 +24,6 @@ export default function ProtectedRoute({ redirectPath = "/login" }) {
   const getUser = async () => {
     try {
       const response = await axios.get(`http://localhost:3000/users/${id}/`);
-      console.log(response);
       if (response.data.response.name_user === user && response.data.response.rol_id === parseInt(role)) {
         setIsAuthorized(true);
       } else {
