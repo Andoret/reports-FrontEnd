@@ -11,7 +11,7 @@ export default function Agradecimiento() {
         <div className="row justify-content-center">
           <div className="col-md-8 d-flex flex-column align-items-center text-center">
             <div className="mb-4">
-              <h1>Gracias por su ayuda.</h1>
+              <h1 className="fs-1">Gracias por su ayuda.</h1>
             </div>
           </div>
         </div>
