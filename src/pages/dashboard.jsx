@@ -31,12 +31,10 @@ import {
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import FileUploadIcon from "@mui/icons-material/FileUpload";
 import { styled } from "@mui/material/styles";
-import useConfig from '../constants/useConfig'
 
 export default function Dashboard() {
   const { role } = useContext(UserContext);
-  const { clientId } = useContext(UserContext);
-  const config = useConfig;
+  const { clientId } = useContext(UserContext);  
   const urlVideosAdmin = `http://localhost:3000/video/all`;
   const urlVideos = `http://localhost:3000/video/clienteid/${clientId}`;
   const urlClients = `http://localhost:3000/clients/all`;

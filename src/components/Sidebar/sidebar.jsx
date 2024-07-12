@@ -20,6 +20,7 @@ import RegisterModal from "./registerModal";
 import Breadcrumbs from "@mui/material/Breadcrumbs";
 import Link from "@mui/material/Link";
 import { useLocation } from "react-router-dom";
+import axios from "axios";
 
 const theme = createTheme({
   palette: {
@@ -34,6 +35,7 @@ const theme = createTheme({
 
 export default function Sidebar({ open, toggleDrawer, navigateTo }) {
   const { role, user } = useContext(UserContext);
+  const urlLogOut = "http://localhost:3000/authenticate/logout"
   const [modalOpen, setModalOpen] = useState(false);
   const location = useLocation();
 
@@ -44,6 +46,11 @@ export default function Sidebar({ open, toggleDrawer, navigateTo }) {
   const handleCloseModal = () => {
     setModalOpen(false);
   };
+
+  const logOut = () =>{
+    axios.get (urlLogOut)
+    navigateTo("/login")
+  } 
 
   const trimmedPathname = location.pathname.startsWith("/")
     ? location.pathname.substring(1)
@@ -127,8 +134,7 @@ export default function Sidebar({ open, toggleDrawer, navigateTo }) {
             variant="contained"
             color="error"
             onClick={() => {
-              localStorage.clear();
-              navigateTo("/Login");
+              logOut();
             }}
           >
             <PowerSettingsNewIcon
