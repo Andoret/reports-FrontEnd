@@ -22,8 +22,9 @@ export default function ProtectedRoute({ redirectPath = "/login" }) {
     try {
       axios.defaults.withCredentials = true;
 
-      const response = await axios.get(`http://localhost:3000/users/${id}/`);
-      if (response.data.response.name_user === user && response.data.response.rol_id === parseInt(role)) {
+      const response = await axios.post(`http://localhost:3000/auth/refresh/`);
+      console.log(response)
+      if (response.data.success) {
         setIsAuthorized(true);
       } else {
         setIsAuthorized(false);

@@ -185,7 +185,6 @@ export default function Admin() {
           "Content-Type": "multipart/form-data",
         },
       });
-      console.log("Subido con éxito");
       document.getElementById("btnClose").click();
       setSnackOpen(true);
       role === "1" ? getVideosAdmin() : getVideos();

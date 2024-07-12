@@ -6,7 +6,6 @@ const UserContext = createContext();
 const UserProvider = ({ children }) => {
   const [caseNum, setCaseNum] = useState(() => decryptStorage(localStorage.getItem('caseNum')) || '');
   const [role, setRole] = useState(() => decryptStorage(localStorage.getItem('role')) || '');
-  const [tkn, setTkn] = useState(() => decryptStorage(localStorage.getItem('tkn')) || '');
   const [user, setUser] = useState(() => decryptStorage(localStorage.getItem('user')) || '');
   const [id, setId] = useState(() => decryptStorage(localStorage.getItem('id')) || '');
   const [clientId, setClientId] = useState(() => decryptStorage(localStorage.getItem('clientId')) || '');
@@ -21,9 +20,7 @@ const UserProvider = ({ children }) => {
     if (role) {
       localStorage.setItem('role', encryptStorage(role));
     }
-    if (tkn) {
-      localStorage.setItem('tkn', encryptStorage(tkn));
-    }
+   
     if (id) {
       localStorage.setItem('id', encryptStorage(id));
     }
@@ -43,7 +40,6 @@ const UserProvider = ({ children }) => {
         if (newCount === 0) {
           localStorage.removeItem('caseNum');
           localStorage.removeItem('role');
-          localStorage.removeItem('tkn');
           localStorage.removeItem('user');
           localStorage.removeItem('id');
           localStorage.removeItem('clientId');
@@ -56,10 +52,10 @@ const UserProvider = ({ children }) => {
     return () => {
       window.removeEventListener('beforeunload', handleBeforeUnload);
     };
-  }, [caseNum, role, tkn, user, id, clientId]);
+  }, [caseNum, role, user, id, clientId]);
 
   return (
-    <UserContext.Provider value={{ caseNum, setCaseNum, role, setRole, tkn, setTkn, user, setUser, id, setId, clientId, setClientId }}>
+    <UserContext.Provider value={{ caseNum, setCaseNum, role, setRole , user, setUser, id, setId, clientId, setClientId }}>
       {children}
     </UserContext.Provider>
   );

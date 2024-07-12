@@ -53,9 +53,7 @@ const UserModal = ({ open, handleClose }) => {
         client_id: userInfo.client_id,
         rol_id: userInfo.rol_id,
       };
-      console.log(data
-
-      )
+     
       const response = await axios.post("http://localhost:3000/users/register/",data);
       if (response.data.success) {
         setSnackbarMessage("Usuario registrado exitosamente");
