@@ -12,15 +12,18 @@ import {
 import DeleteIcon from "@mui/icons-material/Delete";
 import "../../assets/styles/videoItem.css";
 import axios from "axios";
+import useConfig from "../../constants/useConfig";
 
 const VideoListItem = ({ video, handleVideoDeleted }) => {
-  const urlDelete = "http://localhost:3000/video/delete";
+  const config = useConfig();
+  const urlDelete = "http://tpbooks5.teleperformance.co/api/video/delete";
   const [open, setOpen] = React.useState(false);
   const [openDelete, setOpenDelete] = React.useState(false);
   const [snackbarMessage, setSnackbarMessage] = React.useState("");
 
   const copyURL = (videoName) => {
-    if (!openDelete) { // Evitar copiar URL si el modal de eliminación está abierto
+    if (!openDelete) {
+      // Evitar copiar URL si el modal de eliminación está abierto
       const url = `http://localhost:5173/video/${video.client_id}/${videoName}`;
       const tempText = document.createElement("textarea");
       tempText.value = url;
@@ -28,7 +31,7 @@ const VideoListItem = ({ video, handleVideoDeleted }) => {
       tempText.select();
       document.execCommand("copy");
       document.body.removeChild(tempText);
-      setSnackbarMessage(`URL del video ${video.name_video} copiada`)
+      setSnackbarMessage(`URL del video ${video.name_video} copiada`);
       setOpen(true);
     }
   };
@@ -55,15 +58,17 @@ const VideoListItem = ({ video, handleVideoDeleted }) => {
   const deleteVideo = () => {
     const id = video.id;
     axios
-      .delete(`${urlDelete}/${id}`)
+      .delete(`${urlDelete}/${id}`, config)
       .then((response) => {
         setSnackbarMessage(`Video ${video.name_video} eliminado exitosamente`);
         setOpenDelete(false);
-        handleVideoDeleted(); 
+        handleVideoDeleted();
       })
       .catch((error) => {
         console.error("Error al eliminar el video:", error);
-        setSnackbarMessage(`Error al intentar eliminar el video ${video.name_video}`);
+        setSnackbarMessage(
+          `Error al intentar eliminar el video ${video.name_video}`
+        );
         setOpenDelete(false);
       })
       .finally(() => {
@@ -122,10 +127,20 @@ const VideoListItem = ({ video, handleVideoDeleted }) => {
           <Typography id="modal-modal-description" sx={{ mt: 2 }}>
             {`¿Está seguro que desea eliminar el video ${video.name_video}?`}
           </Typography>
-          <Button sx={{width: "49%", marginRight: "1%", mt: 2}} variant="contained" color="success" onClick={deleteVideo}>
+          <Button
+            sx={{ width: "49%", marginRight: "1%", mt: 2 }}
+            variant="contained"
+            color="success"
+            onClick={deleteVideo}
+          >
             Eliminar
           </Button>
-          <Button sx={{width: "49%", marginLeft: "1%", mt: 2}} variant="contained" color="error" onClick={handleCloseDelete}>
+          <Button
+            sx={{ width: "49%", marginLeft: "1%", mt: 2 }}
+            variant="contained"
+            color="error"
+            onClick={handleCloseDelete}
+          >
             Cancelar
           </Button>
         </Box>

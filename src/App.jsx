@@ -15,25 +15,23 @@ import ProtectedRoute from "./utils/protectedRoute";
 export default function App() {
   return (
     <UserProvider>
-    <BrowserRouter>
-    <Routes>
+      <BrowserRouter>
+        <Routes>
+          <Route element={<ProtectedRoute redirectPath="/login" />}>
+            <Route path="/admin" element={<Admin />} />
 
-    <Route element={<ProtectedRoute redirectPath="/login" />}>
-      <Route path="/admin" element={<Admin/>} />
-    
-      <Route path="/reports" element={<Reports/>} />
-      <Route path="/upload" element={<Upload/>} />
-      <Route path="/dashboard" element={<Dashboard />} />
-
-    </Route>
-      <Route path="/" element={<Default />} />
-      <Route path="/survey" element={<Survey />} />
-      <Route path="/video/:id/:video" element={<Video />} />
-      <Route path="/video/" element={<Video />} />
-      <Route path="/agradecimiento" element={<Agradecimiento />} />
-      <Route path="/login" element={<Login/>} />
-    </Routes>
-    </BrowserRouter>
+            <Route path="/reports" element={<Reports />} />
+            <Route path="/upload" element={<Upload />} />
+            <Route path="/dashboard" element={<Dashboard />} />
+          </Route>
+          <Route path="/" element={<Default />} />
+          <Route path="/survey" element={<Survey />} />
+          <Route path="/video/:id/:video" element={<Video />} />
+          <Route path="/video/" element={<Video />} />
+          <Route path="/agradecimiento" element={<Agradecimiento />} />
+          <Route path="/login" element={<Login />} />
+        </Routes>
+      </BrowserRouter>
     </UserProvider>
-    )
-}  
+  );
+}

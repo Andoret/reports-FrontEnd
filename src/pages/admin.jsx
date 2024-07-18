@@ -26,13 +26,16 @@ import { UserContext } from "../context/UserContext";
 import Sidebar from "../components/Sidebar/sidebar";
 import "../assets/styles/admin.css";
 import { styled } from "@mui/material/styles";
+import useConfig from "../constants/useConfig";
 
 export default function Admin() {
   const { role, clientId } = useContext(UserContext);
-  const urlVideosAdmin = `http://localhost:3000/video/all`;
-  const urlVideos = `http://localhost:3000/video/clienteid/${clientId}`;
-  const urlClients = `http://localhost:3000/clients/all`;
-  const urlPost = "http://localhost:3000/video/create";
+  const { access_token } = useContext(UserContext);
+  const config = useConfig();
+  const urlVideosAdmin = `http://tpbooks5.teleperformance.co/api/video/all`;
+  const urlVideos = `http://tpbooks5.teleperformance.co/api/video/clienteid/${clientId}`;
+  const urlClients = `http://tpbooks5.teleperformance.co/api/clients/all`;
+  const urlPost = "http://tpbooks5.teleperformance.co/api/video/create";
   const nav = useNavigate();
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [modalOpen, setModalOpen] = useState(false);
@@ -79,7 +82,7 @@ export default function Admin() {
 
   const getVideos = async () => {
     try {
-      const response = await axios.get(urlVideos);
+      const response = await axios.get(urlVideos, config);
       const updatedVideos = response.data.results.map((video) => ({
         ...video,
         src: `/videos/${clientId}/${video.name_video}.mp4`,
@@ -94,7 +97,7 @@ export default function Admin() {
 
   const getVideosAdmin = async () => {
     try {
-      const response = await axios.get(urlVideosAdmin);
+      const response = await axios.get(urlVideosAdmin, config);
       const updatedVideos = response.data.response.map((video) => ({
         ...video,
         src: `/videos/${video.client_id}/${video.name_video}.mp4`,
@@ -109,7 +112,7 @@ export default function Admin() {
 
   const getClients = async () => {
     try {
-      const response = await axios.get(urlClients);
+      const response = await axios.get(urlClients, config);
       setClients(response.data.results);
       setLoading(false);
     } catch (error) {
@@ -182,6 +185,7 @@ export default function Admin() {
     try {
       const response = await axios.post(urlPost, params, {
         headers: {
+          Authorization: access_token ? `Bearer ${access_token}` : "",
           "Content-Type": "multipart/form-data",
         },
       });
@@ -332,7 +336,7 @@ export default function Admin() {
                     Nombre de video duplicado. Por favor, elige otro nombre.
                   </Alert>
                 )}
-                {role === "1" && (
+                {role == "1" && (
                   <Select
                     labelId="client-select-label"
                     sx={{ marginTop: "5px" }}

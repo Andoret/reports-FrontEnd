@@ -1,11 +1,13 @@
-import React, { useState, useEffect, useContext } from 'react';
-import { Navigate, Outlet } from 'react-router-dom';
-import axios from 'axios';
-import { UserContext } from '../context/UserContext';
-import CircularProgress from '@mui/material/CircularProgress';
+import React, { useState, useEffect, useContext } from "react";
+import { Navigate, Outlet } from "react-router-dom";
+import axios from "axios";
+import { UserContext } from "../context/UserContext";
+import CircularProgress from "@mui/material/CircularProgress";
+import useConfig from "../constants/useConfig";
 
 export default function ProtectedRoute({ redirectPath = "/login" }) {
-  const { id, role, user } = useContext(UserContext);
+  const config = useConfig();
+  const { id, role, user, access_token } = useContext(UserContext);
   const [isAuthorized, setIsAuthorized] = useState(null);
   const [loading, setLoading] = useState(true);
 
@@ -13,24 +15,30 @@ export default function ProtectedRoute({ redirectPath = "/login" }) {
     if (id && role && user) {
       getUser();
     } else {
-      setIsAuthorized(false); 
+      setIsAuthorized(false);
       setLoading(false);
     }
   }, [id, role, user]);
 
   const getUser = async () => {
+    console.log({ config });
     try {
-      axios.defaults.withCredentials = true;
-
-      const response = await axios.post(`http://localhost:3000/auth/refresh/`);
-      console.log(response)
+      const response = await axios.post(
+        `http://tpbooks5.teleperformance.co/api/auth/refresh`,
+        {
+          headers: {
+            Authorization: `Bearer ${access_token}`,
+          }
+        }
+      );
+      console.log("Response de refresh", response);
       if (response.data.success) {
         setIsAuthorized(true);
       } else {
         setIsAuthorized(false);
       }
     } catch (error) {
-      console.error('Error fetching user data:', error);
+      console.error("Error fetching user data:", error);
       setIsAuthorized(false);
     } finally {
       setLoading(false);
@@ -48,7 +56,9 @@ export default function ProtectedRoute({ redirectPath = "/login" }) {
             </linearGradient>
           </defs>
         </svg>
-        <CircularProgress sx={{ 'svg circle': { stroke: 'url(#my_gradient)' } }} />
+        <CircularProgress
+          sx={{ "svg circle": { stroke: "url(#my_gradient)" } }}
+        />
       </React.Fragment>
     );
   }

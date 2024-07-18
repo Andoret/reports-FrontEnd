@@ -1,64 +1,64 @@
 import React from "react";
-import { useState,useContext} from "react";
+import { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import axios from "axios";
 import "../assets/styles/login.css";
 import img1 from "../assets/images/logo-mentor.png";
-import LoginIcon from '@mui/icons-material/Login';
-import { grey } from '@mui/material/colors';
+import LoginIcon from "@mui/icons-material/Login";
+import { grey } from "@mui/material/colors";
 import { UserContext } from "../context/UserContext";
 
 export default function Login() {
-
-  const nav=useNavigate();
-  const [error,setError]=useState('');
+  const nav = useNavigate();
+  const [error, setError] = useState("");
   const [credentials, setCredentials] = useState({
     user_name: "",
     password: "",
   });
-  const { setRole,setUser,setId,setClientId} = useContext(UserContext);
+  const { setRole, setUser, setId, setClientId, setAccess_Token } =
+    useContext(UserContext);
 
-  const logIn= async(e)=>{
-    e.preventDefault(); 
-    if(!credentials.user_name || !credentials.password){
-      setError('Usuario o contraseña incorrecto')
+  const logIn = async (e) => {
+    e.preventDefault();
+    if (!credentials.user_name || !credentials.password) {
+      setError("Usuario o contraseña incorrecto");
+    } else {
+      const data = {
+        name_user: credentials.user_name,
+        password: credentials.password,
+      };
+      try {
+        const response = await axios.post(
+          "http://tpbooks5.teleperformance.co/api/authenticate/login/",
+          data
+        );
+        const dataResponse = response.data.response;
+        if (dataResponse.status) {
+          setUser(dataResponse.user.name_user);
+          setRole(dataResponse.user.rol_id);
+          setId(dataResponse.user.id_user);
+          setClientId(dataResponse.user.client_id);
+          setAccess_Token(dataResponse.access_token);
 
+          console.log(dataResponse);
+          nav("/admin");
+        }
+      } catch (error) {
+        console.error(error);
+        if (error.response && error.response.status === 404) {
+          setError("Usuario no encontrado");
+        } else if (error.response && error.response.status === 401) {
+          setError("Usuario o contraseña incorrecto");
+        } else {
+          setError(
+            "Error en el servidor, por favor intentalo de nuevo mas tarde"
+          );
+        }
+      }
     }
-    else{ 
-        const data={
-          name_user:credentials.user_name,
-          password:credentials.password
-        }
-        try{
-            const response= await axios.post("http://localhost:3000/authenticate/login/",data)
-            const dataResponse=response.data.response
-            if(dataResponse.status){
-              setUser(dataResponse.user.name_user)
-              setRole(dataResponse.user.rol_id)
-              setId(dataResponse.user.id_user)
-              setClientId(dataResponse.user.client_id)
-              nav("/admin")
-            }
-          
-        }
-        catch(error){
-          console.error(error)
-          if (error.response && error.response.status ===404){
-            setError('Usuario no encontrado');
-          }else if (error.response && error.response.status===401){
-            setError('Usuario o contraseña incorrecto')
-          }
-          
-          else{
-            setError('Error en el servidor, por favor intentalo de nuevo mas tarde');
-          }
-      }}
-      
-    
-  }
-
+  };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -67,7 +67,6 @@ export default function Login() {
       [name]: value,
     }));
   };
-
 
   return (
     <div className="indexBody indexCenter">
@@ -81,57 +80,66 @@ export default function Login() {
               </div>
             </div>
             <form onSubmit={logIn}>
-            <div className="row mb-2 justify-content-center">
-              <div className="col-6">
-                <TextField
-                  label="Usuario"
-                  variant="standard"
-                  type="text"
-                  required
-                  onChange={handleChange}
-                  name="user_name"
-                  sx={{
-                    "& .MuiInput-underline:before": {
-                      borderBottomColor: "white",
-                    },
-                    "& .MuiInput-underline:hover:before": {
-                      borderBottomColor: "white",
-                    },
-                    input: { color: "white" },
-                    label: { color: "white" },
-                  }}
-                />
+              <div className="row mb-2 justify-content-center">
+                <div className="col-6">
+                  <TextField
+                    label="Usuario"
+                    variant="standard"
+                    type="text"
+                    required
+                    onChange={handleChange}
+                    name="user_name"
+                    sx={{
+                      "& .MuiInput-underline:before": {
+                        borderBottomColor: "white",
+                      },
+                      "& .MuiInput-underline:hover:before": {
+                        borderBottomColor: "white",
+                      },
+                      input: { color: "white" },
+                      label: { color: "white" },
+                    }}
+                  />
+                </div>
               </div>
-            </div>
-            <div className="row mb-4 justify-content-center">
-              <div className="col-6">
-                <TextField
-                  label="Contraseña"
-                  variant="standard"
-                  type="password"
-                  required
-                  onChange={handleChange}
-                  name="password"
-                  sx={{
-                    "& .MuiInput-underline:before": {
-                      borderBottomColor: "white",
-                    },
-                    "& .MuiInput-underline:hover:before": {
-                      borderBottomColor: "white",
-                    },
-                    input: { color: "white" },
-                    label: { color: "white" },
-                  }}
-                />
+              <div className="row mb-4 justify-content-center">
+                <div className="col-6">
+                  <TextField
+                    label="Contraseña"
+                    variant="standard"
+                    type="password"
+                    required
+                    onChange={handleChange}
+                    name="password"
+                    sx={{
+                      "& .MuiInput-underline:before": {
+                        borderBottomColor: "white",
+                      },
+                      "& .MuiInput-underline:hover:before": {
+                        borderBottomColor: "white",
+                      },
+                      input: { color: "white" },
+                      label: { color: "white" },
+                    }}
+                  />
+                </div>
               </div>
-              
-            </div>
-            {error && <p className='text-danger mt-2 text-center'>{error}</p>}
-            <div className="row mb-3  text-center d-flex align-items-center justify-content-center">
-              <div className="col-8">
-                <Button  type="submit" variant="contained" endIcon={<LoginIcon/>} sx={{bgcolor:grey[600],"&:hover":{bgcolor:"purple"}}} >Ingresar</Button>
+              {error && <p className="text-danger mt-2 text-center">{error}</p>}
+              <div className="row mb-3  text-center d-flex align-items-center justify-content-center">
+                <div className="col-8">
+                  <Button
+                    type="submit"
+                    variant="contained"
+                    endIcon={<LoginIcon />}
+                    sx={{
+                      bgcolor: grey[600],
+                      "&:hover": { bgcolor: "purple" },
+                    }}
+                  >
+                    Ingresar
+                  </Button>
+                </div>
               </div>
-            </div>
             </form>
           </div>
         </div>

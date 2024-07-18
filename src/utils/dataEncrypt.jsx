@@ -1,5 +1,5 @@
-import CryptoJS from 'crypto-js';
-import { secretKey } from '../constants/secretKey';
+import CryptoJS from "crypto-js";
+import { secretKey } from "../constants/secretKey";
 
 export const encryptStorage = (data) => {
   return CryptoJS.AES.encrypt(JSON.stringify(data), secretKey).toString();

@@ -23,7 +23,8 @@ export default function Default() {
           <div className="col w-100 mb-4 justify-content-center">
             <h1>Oops, página no encontrada</h1>
             <p className="text-white fs-4">
-              La página que estás buscando no existe. <br></br> Por favor, contacta con nosotros.
+              La página que estás buscando no existe. <br></br> Por favor,
+              contacta con nosotros.
             </p>
           </div>
         </div>

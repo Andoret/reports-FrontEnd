@@ -1,10 +1,9 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
-import "../assets/styles/agradecimiento.css"; 
+import "../assets/styles/agradecimiento.css";
 
 export default function Agradecimiento() {
-
   return (
     <div className="app indexBody d-flex align-items-center justify-content-center">
       <div className="container">

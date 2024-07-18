@@ -21,6 +21,7 @@ import Breadcrumbs from "@mui/material/Breadcrumbs";
 import Link from "@mui/material/Link";
 import { useLocation } from "react-router-dom";
 import axios from "axios";
+import useConfig from "../../constants/useConfig";
 
 const theme = createTheme({
   palette: {
@@ -34,8 +35,10 @@ const theme = createTheme({
 });
 
 export default function Sidebar({ open, toggleDrawer, navigateTo }) {
+  const config = useConfig();
   const { role, user } = useContext(UserContext);
-  const urlLogOut = "http://localhost:3000/authenticate/logout"
+  const urlLogOut =
+    "http://tpbooks5.teleperformance.co/api/authenticate/logout";
   const [modalOpen, setModalOpen] = useState(false);
   const location = useLocation();
 
@@ -47,10 +50,10 @@ export default function Sidebar({ open, toggleDrawer, navigateTo }) {
     setModalOpen(false);
   };
 
-  const logOut = () =>{
-    axios.get (urlLogOut)
-    navigateTo("/login")
-  } 
+  const logOut = () => {
+    axios.get(urlLogOut, config);
+    navigateTo("/login");
+  };
 
   const trimmedPathname = location.pathname.startsWith("/")
     ? location.pathname.substring(1)
@@ -121,7 +124,11 @@ export default function Sidebar({ open, toggleDrawer, navigateTo }) {
                 },
               }}
             >
-              <Link underline="hover" color="inherit" onClick={() => navigateTo("/admin")}>
+              <Link
+                underline="hover"
+                color="inherit"
+                onClick={() => navigateTo("/admin")}
+              >
                 Admin
               </Link>
               <Typography color="text.light">{trimmedPathname}</Typography>

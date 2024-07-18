@@ -31,14 +31,17 @@ import {
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import FileUploadIcon from "@mui/icons-material/FileUpload";
 import { styled } from "@mui/material/styles";
+import useConfig from "../constants/useConfig";
 
 export default function Dashboard() {
   const { role } = useContext(UserContext);
-  const { clientId } = useContext(UserContext);  
-  const urlVideosAdmin = `http://localhost:3000/video/all`;
-  const urlVideos = `http://localhost:3000/video/clienteid/${clientId}`;
-  const urlClients = `http://localhost:3000/clients/all`;
-  const urlPost = "http://localhost:3000/video/create";
+  const { clientId } = useContext(UserContext);
+  const { access_token } = useContext(UserContext);
+  const config = useConfig();
+  const urlVideosAdmin = `http://tpbooks5.teleperformance.co/api/video/all`;
+  const urlVideos = `http://tpbooks5.teleperformance.co/api/video/clienteid/${clientId}`;
+  const urlClients = `http://tpbooks5.teleperformance.co/api/clients/all`;
+  const urlPost = "http://tpbooks5.teleperformance.co/api/video/create";
   const navigate = useNavigate();
   const [videos, setVideos] = useState([]);
   const [clients, setClients] = useState([]);
@@ -76,7 +79,7 @@ export default function Dashboard() {
 
   const getVideos = async () => {
     try {
-      const response = await axios.get(urlVideos);
+      const response = await axios.get(urlVideos, config);
       const updatedVideos = response.data.results.map((video) => ({
         ...video,
         src: `/videos/${clientId}/${video.name_video}.mp4`,
@@ -92,7 +95,7 @@ export default function Dashboard() {
 
   const getVideosAdmin = async () => {
     try {
-      const response = await axios.get(urlVideosAdmin);
+      const response = await axios.get(urlVideosAdmin, config);
       const updatedVideos = response.data.response.map((video) => ({
         ...video,
         src:
@@ -111,7 +114,7 @@ export default function Dashboard() {
 
   const getClients = async () => {
     try {
-      const response = await axios.get(urlClients);
+      const response = await axios.get(urlClients, config);
       setClients(response.data.results);
       setLoading(false);
     } catch (error) {
@@ -200,6 +203,7 @@ export default function Dashboard() {
     try {
       const response = await axios.post(urlPost, params, {
         headers: {
+          Authorization: access_token ? `Bearer ${access_token}` : "",
           "Content-Type": "multipart/form-data",
         },
       });
@@ -260,7 +264,7 @@ export default function Dashboard() {
                 sx={{
                   width: "50%",
                   marginRight: "15px",
-                  input: { color: "white"},
+                  input: { color: "white" },
                   label: { color: "white" },
                   "& .MuiOutlinedInput-root": {
                     "& fieldset": {
