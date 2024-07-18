@@ -12,26 +12,25 @@ export default function ProtectedRoute({ redirectPath = "/login" }) {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    if (id && role && user) {
+    if (access_token) {
       getUser();
     } else {
       setIsAuthorized(false);
       setLoading(false);
     }
-  }, [id, role, user]);
+  }, [id, role, user,access_token]);
 
   const getUser = async () => {
-    console.log({ config });
     try {
       const response = await axios.post(
-        `http://tpbooks5.teleperformance.co/api/auth/refresh`,
-        {
-          headers: {
-            Authorization: `Bearer ${access_token}`,
+          'http://tpbooks5.teleperformance.co/api/auth/refresh',
+          {}, 
+          {
+              headers: {
+                  Authorization: `Bearer ${access_token}`,
+              }
           }
-        }
       );
-      console.log("Response de refresh", response);
       if (response.data.success) {
         setIsAuthorized(true);
       } else {

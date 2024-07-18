@@ -41,12 +41,10 @@ export default function Login() {
           setId(dataResponse.user.id_user);
           setClientId(dataResponse.user.client_id);
           setAccess_Token(dataResponse.access_token);
-
-          console.log(dataResponse);
           nav("/admin");
         }
       } catch (error) {
-        console.error(error);
+ 
         if (error.response && error.response.status === 404) {
           setError("Usuario no encontrado");
         } else if (error.response && error.response.status === 401) {

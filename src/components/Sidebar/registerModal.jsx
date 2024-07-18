@@ -71,7 +71,7 @@ const UserModal = ({ open, handleClose }) => {
 
       const response = await axios.post(
         "http://tpbooks5.teleperformance.co/api/users/register/",
-        data
+        data,config
       );
       if (response.data.success) {
         setSnackbarMessage("Usuario registrado exitosamente");
