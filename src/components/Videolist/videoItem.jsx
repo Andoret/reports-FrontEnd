@@ -65,7 +65,6 @@ const VideoListItem = ({ video, handleVideoDeleted }) => {
         handleVideoDeleted();
       })
       .catch((error) => {
-        console.error("Error al eliminar el video:", error);
         setSnackbarMessage(
           `Error al intentar eliminar el video ${video.name_video}`
         );
@@ -89,7 +88,6 @@ const VideoListItem = ({ video, handleVideoDeleted }) => {
       <div className="row">
         <video controls width="100%" height="auto">
           <source src={video.src} type="video/mp4" />
-          {console.log(video.src)}
           Tu navegador no soporta la etiqueta de video
         </video>
       </div>

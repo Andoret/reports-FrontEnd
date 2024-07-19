@@ -33,7 +33,6 @@ export default function Survey() {
   const nav = useNavigate();
 
   const survInfo = async () => {
-    console.log(answers);
     const data = {
       code_case: caseNum,
       response_1: parseInt(answers.answer1),
@@ -47,14 +46,13 @@ export default function Survey() {
         config
       );
       if (response.data.status) {
-        console.log(response);
         nav("/agradecimiento");
         localStorage.clear();
       } else {
-        console.log(response.data);
+        console.log("Error");
       }
     } catch (error) {
-      console.error(error);
+      console.log("Error");
     }
   };
 
@@ -64,7 +62,6 @@ export default function Survey() {
       ...prevAnswers,
       [name]: value,
     }));
-    console.log(`Nuevo valor del ${name}: ${value}`); // Aquí imprime el valor actual
   };
 
   return (

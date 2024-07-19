@@ -37,7 +37,7 @@ export default function ProtectedRoute({ redirectPath = "/login" }) {
         setIsAuthorized(false);
       }
     } catch (error) {
-      console.error("Error fetching user data:", error);
+      console.log("Error");
       setIsAuthorized(false);
     } finally {
       setLoading(false);

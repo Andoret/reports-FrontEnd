@@ -31,7 +31,6 @@ const Loader = () => (
 
 export default function Video() {
   const { video, id } = useParams();
-  console.log("Video: ",video, "ID: ", id)
   const src = `/videos/${id}/${video}.mp4`
   const nav = useNavigate();
   const videoRef = useRef(null);
@@ -188,7 +187,6 @@ export default function Video() {
                 >
                 <source 
                 src={src}
-                {...console.log({src})}
                 type="video/mp4"
                 />
               </video>

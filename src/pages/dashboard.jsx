@@ -87,7 +87,7 @@ export default function Dashboard() {
       setVideos(updatedVideos);
       setLoading(false);
     } catch (error) {
-      console.error("Error al obtener los videos:", error.message);
+      console.log("Error al obtener los videos:");
       setLoading(false);
       // Manejo de errores: muestra un mensaje al usuario o redirige a una página de error
     }
@@ -106,7 +106,7 @@ export default function Dashboard() {
       setVideos(updatedVideos);
       setLoading(false);
     } catch (error) {
-      console.error("Error al obtener los videos:", error.message);
+      console.log("Error al obtener los videos:");
       setLoading(false);
       // Manejo de errores: muestra un mensaje al usuario o redirige a una página de error
     }
@@ -118,7 +118,7 @@ export default function Dashboard() {
       setClients(response.data.results);
       setLoading(false);
     } catch (error) {
-      console.error("Error al obtener los clientes:", error.message);
+      console.log("Error al obtener los clientes:");
       setLoading(false);
       // Manejo de errores: muestra un mensaje al usuario o redirige a una página de error
     }
@@ -169,15 +169,15 @@ export default function Dashboard() {
 
   const validate = () => {
     if (!file) {
-      console.error("Video no cargado");
+      console.log("Video no cargado");
       // Aquí puedes mostrar un mensaje de error al usuario.
       return;
     } else if (!name_video) {
-      console.error("Especifica el nombre del video");
+      console.log("Especifica el nombre del video");
       // Aquí puedes mostrar un mensaje de error al usuario.
       return;
     } else if (!clientId && !uploadClientId) {
-      console.error("Fallo al especificar el id del cliente");
+      console.log("Fallo al especificar el id del cliente");
       // Aquí puedes mostrar un mensaje de error al usuario.
       return;
     }
@@ -191,7 +191,7 @@ export default function Dashboard() {
     const duplicados = videos.find((u) => u.name_video === name_video);
 
     if (duplicados) {
-      console.error("Nombre de video no disponible");
+      console.log("Nombre de video no disponible");
       setDuplicateError(true); // Mostrar la alerta de duplicado
       return;
     }
@@ -207,12 +207,11 @@ export default function Dashboard() {
           "Content-Type": "multipart/form-data",
         },
       });
-      console.log("Subido con éxito");
       document.getElementById("btnClose").click();
       setSnackOpen(true);
       role == 1 ? getVideosAdmin() : getVideos();
     } catch (error) {
-      console.error(
+      console.log(
         `El video ${name_video} no se subió por el siguiente error:`,
         error
       );

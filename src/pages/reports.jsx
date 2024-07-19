@@ -56,10 +56,10 @@ export default function Reports() {
         setCases(formatDate);
         setFilteredRows(formatDate);
       } else {
-        console.error(error);
+        console.log("Error");
       }
     } catch (error) {
-      console.error(error);
+      console.log("Error");
     }
   };
   const toggleDrawer = (newOpen) => () => {

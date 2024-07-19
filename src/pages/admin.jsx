@@ -90,7 +90,6 @@ export default function Admin() {
       setVideos(updatedVideos);
       setLoading(false);
     } catch (error) {
-      console.error("Error al obtener los videos:", error.message);
       setLoading(false);
     }
   };
@@ -105,7 +104,6 @@ export default function Admin() {
       setVideos(updatedVideos);
       setLoading(false);
     } catch (error) {
-      console.error("Error al obtener los videos:", error.message);
       setLoading(false);
     }
   };
@@ -116,7 +114,6 @@ export default function Admin() {
       setClients(response.data.results);
       setLoading(false);
     } catch (error) {
-      console.error("Error al obtener los clientes:", error.message);
       setLoading(false);
     }
   };
@@ -154,13 +151,13 @@ export default function Admin() {
 
   const validate = () => {
     if (!file) {
-      console.error("Video no cargado");
+      console.log("Video no cargado");
       return;
     } else if (!name_video) {
-      console.error("Especifica el nombre del video");
+      console.log("Especifica el nombre del video");
       return;
     } else if (!clientId && !uploadClientId) {
-      console.error("Fallo al especificar el id del cliente");
+      console.log("Fallo al especificar el id del cliente");
       return;
     }
 
@@ -173,7 +170,7 @@ export default function Admin() {
     const duplicados = videos.find((u) => u.name_video === name_video);
 
     if (duplicados) {
-      console.error("Nombre de video no disponible");
+      console.log("Nombre de video no disponible");
       setDuplicateError(true);
       return;
     }
@@ -193,9 +190,8 @@ export default function Admin() {
       setSnackOpen(true);
       role === "1" ? getVideosAdmin() : getVideos();
     } catch (error) {
-      console.error(
-        `El video ${name_video} no se subió por el siguiente error:`,
-        error
+      console.log(
+        `El video ${name_video} no se subió`
       );
     }
   };
