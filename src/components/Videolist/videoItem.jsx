@@ -24,7 +24,7 @@ const VideoListItem = ({ video, handleVideoDeleted }) => {
   const copyURL = (videoName) => {
     if (!openDelete) {
       // Evitar copiar URL si el modal de eliminación está abierto
-      const url = `http://localhost:5173/video/${video.client_id}/${videoName}`;
+      const url = `http://tpbooks5.teleperformance.co/video/${video.client_id}/${videoName}`;
       const tempText = document.createElement("textarea");
       tempText.value = url;
       document.body.appendChild(tempText);
@@ -89,6 +89,7 @@ const VideoListItem = ({ video, handleVideoDeleted }) => {
       <div className="row">
         <video controls width="100%" height="auto">
           <source src={video.src} type="video/mp4" />
+          {console.log(video.src)}
           Tu navegador no soporta la etiqueta de video
         </video>
       </div>

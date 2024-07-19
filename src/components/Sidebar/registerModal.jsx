@@ -45,6 +45,7 @@ const UserModal = ({ open, handleClose }) => {
         "http://tpbooks5.teleperformance.co/api/clients/all",
         config
       );
+
       setClientsData(response.data.results);
     } catch (error) {
       console.error(error);
@@ -73,6 +74,7 @@ const UserModal = ({ open, handleClose }) => {
         "http://tpbooks5.teleperformance.co/api/users/register/",
         data,config
       );
+      console.log("Response:", response.data)
       if (response.data.success) {
         setSnackbarMessage("Usuario registrado exitosamente");
         setSnackbarSeverity("success");

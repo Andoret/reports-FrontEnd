@@ -185,7 +185,7 @@ export default function Admin() {
     try {
       const response = await axios.post(urlPost, params, {
         headers: {
-          Authorization: access_token ? `Bearer ${access_token}` : "",
+          "Authorization": `Bearer ${access_token}`,
           "Content-Type": "multipart/form-data",
         },
       });

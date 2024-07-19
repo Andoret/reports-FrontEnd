@@ -23,15 +23,25 @@ const style = {
   bgcolor: "rgb(19, 20, 20)",
 };
 
+const Loader = () => (
+  <div className="loader">
+    <p>Cargando...</p>
+  </div>
+);
+
 export default function Video() {
-  const { video } = useParams();
-  const { id } = useParams();
+  const { video, id } = useParams();
+  console.log("Video: ",video, "ID: ", id)
+  const src = `/videos/${id}/${video}.mp4`
   const nav = useNavigate();
   const videoRef = useRef(null);
   const [videoEnded, setVideoEnded] = useState(false);
   const [caseNumber, setCaseNumber] = useState("");
   const [error, setError] = useState("");
+  const [videoLoaded, setVideoLoaded] = useState(false);
   const { setCaseNum, setClientId } = useContext(UserContext);
+  const [open, setOpen] = useState(true);
+
   useEffect(() => {
     const handleBeforeUnload = (event) => {
       const message = "¿Seguro que quieres cerrar esta página?";
@@ -42,7 +52,6 @@ export default function Video() {
     window.addEventListener("beforeunload", handleBeforeUnload);
 
     return () => {
-      handleOpen();
       window.removeEventListener("beforeunload", handleBeforeUnload);
     };
   }, []);
@@ -51,13 +60,14 @@ export default function Video() {
     setVideoEnded(true);
   };
 
-  console.log(video);
-
   const handlePlay = () => {
     setVideoEnded(false);
   };
 
-  const [open, setOpen] = useState(true);
+  const handleVideoCanPlay = () => {
+    setVideoLoaded(true);
+  };
+
   const handleClose = () => {
     if (caseNumber) {
       setOpen(false);
@@ -65,29 +75,28 @@ export default function Video() {
       setError("Ingresa un número de caso");
     }
   };
-  const handleOpen = () => setOpen(true);
 
   const handleChange = (e) => {
     const { value } = e.target;
-    console.log(`Nuevo valor del número de caso: ${value}`);
     setCaseNumber(value);
   };
 
   const saveCaseNumber = () => {
     if (!caseNumber) {
-      setError("Ingresa un numero de caso");
+      setError("Ingresa un número de caso");
     } else {
       setCaseNum(caseNumber);
       handleClose();
-      console.log(open);
     }
   };
+
   const checkVideo = () => {
     if (videoEnded) {
       setClientId(id);
       nav("/survey");
     }
   };
+
   return (
     <div className="app indexBody d-flex align-items-center justify-content-center">
       <Modal
@@ -110,7 +119,7 @@ export default function Video() {
         }}
       >
         <Box sx={style}>
-          <div className="text-center cont-form ">
+          <div className="text-center cont-form">
             <div className="col mt-2 mb-2">
               <img alt="MentoryPro logo" src={img1} className="logoError" />
             </div>
@@ -151,9 +160,8 @@ export default function Video() {
                 />
               </div>
             </div>
-            <div className="row mb-4 justify-content-center ">
+            <div className="row mb-4 justify-content-center">
               {error && <p className="text-danger mt-2 text-center">{error}</p>}
-
               <div>
                 <button className="btn btn-custom" onClick={saveCaseNumber}>
                   <span className="fw-bold text-white">Continuar</span>
@@ -166,22 +174,30 @@ export default function Video() {
       <div className="container">
         <div className="row justify-content-center">
           <div className="col-md-8 video-field d-flex flex-column justify-content-center">
-            <div className="ratio ratio-16x9">
+            {!videoLoaded && <Loader />}
+            <div className={`ratio ratio-16x9 ${videoLoaded ? "" : "d-none"}`}>
               <video
                 ref={videoRef}
                 className="embed-responsive-item"
-                src={`/videos/${id}/${video}.mp4`}
                 controls
                 allowFullScreen
                 controlsList="nodownload"
                 onEnded={handleVideoEnd}
                 onPlay={handlePlay}
-              />
+                onCanPlay={handleVideoCanPlay}
+                >
+                <source 
+                src={src}
+                {...console.log({src})}
+                type="video/mp4"
+                />
+              </video>
+
             </div>
             <button
               className={`btn-continue fw-bold ${videoEnded ? "active" : ""}`}
               disabled={!videoEnded}
-              onClick={() => checkVideo()}
+              onClick={checkVideo}
             >
               <span>Continuar</span>
             </button>
