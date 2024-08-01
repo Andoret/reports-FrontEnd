@@ -86,10 +86,7 @@ const VideoListItem = ({ video, handleVideoDeleted }) => {
       onClick={() => copyURL(video.name_video)}
     >
       <div className="row">
-        <video controls width="100%" height="auto">
-          <source src={video.src} type="video/mp4" />
-          Tu navegador no soporta la etiqueta de video
-        </video>
+        <video controls width="100%" height="auto" src={video.src}/>
       </div>
       <div className="row d-flex justify-content-center align-items-center w-100 pt-2 mt-2 pb-0 mb-0 ms-0">
         <div className="col-10">

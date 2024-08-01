@@ -9,6 +9,7 @@ import Modal from "@mui/material/Modal";
 import TextField from "@mui/material/TextField";
 import img1 from "../assets/images/logo-mentor.png";
 import { UserContext } from "../context/UserContext";
+import videoDEMO from '/videos/1/DEMO.mp4'
 
 const style = {
   position: "absolute",
@@ -25,13 +26,13 @@ const style = {
 
 const Loader = () => (
   <div className="loader">
-    <p>Cargando...</p>
+    <p className="text-white">Cargando...</p>
   </div>
 );
 
 export default function Video() {
   const { video, id } = useParams();
-  const src = `/videos/${id}/${video}.mp4`
+  const src = `/videos/${id}/${video}.mp4`;
   const nav = useNavigate();
   const videoRef = useRef(null);
   const [videoEnded, setVideoEnded] = useState(false);
@@ -176,21 +177,16 @@ export default function Video() {
             {!videoLoaded && <Loader />}
             <div className={`ratio ratio-16x9 ${videoLoaded ? "" : "d-none"}`}>
               <video
-                ref={videoRef}
+                // ref={videoRef}
                 className="embed-responsive-item"
+                src={videoDEMO}
                 controls
                 allowFullScreen
                 controlsList="nodownload"
                 onEnded={handleVideoEnd}
                 onPlay={handlePlay}
                 onCanPlay={handleVideoCanPlay}
-                >
-                <source 
-                src={src}
-                type="video/mp4"
-                />
-              </video>
-
+              ></video>
             </div>
             <button
               className={`btn-continue fw-bold ${videoEnded ? "active" : ""}`}

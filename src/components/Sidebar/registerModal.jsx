@@ -48,7 +48,7 @@ const UserModal = ({ open, handleClose }) => {
 
       setClientsData(response.data.results);
     } catch (error) {
-      
+      console.log("Error 404")
     }
   };
 

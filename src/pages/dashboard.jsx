@@ -102,6 +102,8 @@ export default function Dashboard() {
           role == 1
             ? `/videos/${video.client_id}/${video.name_video}.mp4`
             : `/videos/${clientId}/${video.name_video}.mp4`,
+            // ? `/videos/${video.client_id}/${video.name_video}.mp4`
+            // : `/videos/${clientId}/${video.name_video}.mp4`,
       }));
       setVideos(updatedVideos);
       setLoading(false);
@@ -212,8 +214,7 @@ export default function Dashboard() {
       role == 1 ? getVideosAdmin() : getVideos();
     } catch (error) {
       console.log(
-        `El video ${name_video} no se subió por el siguiente error:`,
-        error
+        `El video ${name_video} no se subió`
       );
     }
   };
