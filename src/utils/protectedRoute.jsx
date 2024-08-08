@@ -15,6 +15,7 @@ export default function ProtectedRoute({ redirectPath = "/login" }) {
     if (access_token) {
       getUser();
     } else {
+      console.log("no esta realizando validacion", access_token)
       setIsAuthorized(false);
       setLoading(false);
     }
@@ -23,7 +24,8 @@ export default function ProtectedRoute({ redirectPath = "/login" }) {
   const getUser = async () => {
     try {
       const response = await axios.post(
-          'http://tpbooks5.teleperformance.co/api/auth/refresh',
+        
+          'http://localhost:3000/auth/refresh',
           {}, 
           {
               headers: {
@@ -35,6 +37,7 @@ export default function ProtectedRoute({ redirectPath = "/login" }) {
         setIsAuthorized(true);
       } else {
         setIsAuthorized(false);
+        console.log(response.data)
       }
     } catch (error) {
       console.log("Error");
@@ -63,7 +66,7 @@ export default function ProtectedRoute({ redirectPath = "/login" }) {
   }
 
   if (!isAuthorized) {
-    localStorage.clear();
+    
     return <Navigate to={redirectPath} replace />;
   }
 

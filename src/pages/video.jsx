@@ -9,7 +9,6 @@ import Modal from "@mui/material/Modal";
 import TextField from "@mui/material/TextField";
 import img1 from "../assets/images/logo-mentor.png";
 import { UserContext } from "../context/UserContext";
-import videoDEMO from '/videos/1/DEMO.mp4'
 
 const style = {
   position: "absolute",

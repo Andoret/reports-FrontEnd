@@ -17,7 +17,7 @@ export default function Login() {
     user_name: "",
     password: "",
   });
-  const { setRole, setUser, setId, setClientId, setAccess_Token } =
+  const { setRole, setUser, setId, setClientId, setAccess_Token,access_token } =
     useContext(UserContext);
 
   const logIn = async (e) => {
@@ -31,17 +31,23 @@ export default function Login() {
       };
       try {
         const response = await axios.post(
-          "http://tpbooks5.teleperformance.co/api/authenticate/login/",
+          "http://localhost:3000/authenticate/login/",
           data
         );
         const dataResponse = response.data.response;
+        console.log(dataResponse.access_token) 
         if (dataResponse.status) {
           setUser(dataResponse.user.name_user);
           setRole(dataResponse.user.rol_id);
           setId(dataResponse.user.id_user);
           setClientId(dataResponse.user.client_id);
           setAccess_Token(dataResponse.access_token);
-          nav("/admin");
+
+          if(access_token){
+            nav("/admin");
+            console.log(access_token)
+          }
+         
         }
       } catch (error) {
  
@@ -57,6 +63,7 @@ export default function Login() {
       }
     }
   };
+
 
   const handleChange = (e) => {
     const { name, value } = e.target;
